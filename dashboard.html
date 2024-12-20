@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Driving Behavior Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #1e1e2f;
+            color: #ffffff;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .sidebar {
+    width: 300px;
+    background-color: #2e2e3e;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.5);
+    border-radius: 20px 0 0 20px; /* Curved on all four corners */
+    height: calc(100% - 40px);
+    margin: 20px;
+    margin-bottom: 0;
+}
+
+.profile-box {
+    background-color: #3a3a4a;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Align photo and details vertically */
+    gap: 15px; /* Space between photo, details, and button */
+    text-align: center;
+}
+
+.profile-box img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+}
+
+.profile-details {
+    color: #ffffff;
+}
+
+.profile-details h3 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.profile-details p {
+    margin: 5px 0;
+    color: #a1a1a1;
+}
+
+.edit-btn {
+    padding: 10px 20px;
+    background-color: #4a90e2;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+    width: 100%;
+}
+
+.edit-btn:hover {
+    background-color: #357abd;
+}
+
+/* Driver List Styling */
+.drivers-list {
+    background-color: #3a3a4a;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.drivers-list h3 {
+    margin-bottom: 10px;
+    color: #ffffff;
+}
+
+.drivers-list ul {
+    list-style: none;
+    padding: 0;
+}
+
+.drivers-list li {
+    margin: 10px 0;
+    padding: 10px;
+    background-color: #4a4a6a;
+    border-radius: 5px;
+    color: #ffffff;
+}
+
+
+        .main-content {
+            flex: 1;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            background-color: #2e2e3e;
+            border-radius: 20px 0 0 10px;
+            margin: 20px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+            height: calc(100%);
+        }
+    
+
+        .ranking-heading {
+    font-size: 24px;
+    color: #ffffff;
+    font-weight: bold;
+    margin-left: 0; /* Remove previous left positioning */
+}
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start; /* Align all items at the start */
+    background-color: #3a3a4a;
+    padding: 20px 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    position: relative;
+    height: auto; /* Adjusted height to fit content */
+}
+
+.header-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 15px; /* Increased gap between elements */
+    flex: 1;
+}
+
+.header-left h3 {
+    font-size: 24px;
+    color: #ffffff;
+    margin: 0;
+}
+
+.graph-dates {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    color: #ffffff;
+    font-size: 14px;
+    margin-top: 8px;
+}
+
+.date-left, .date-right {
+    font-size: 14px;
+}
+
+.header-right {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 20px;
+    flex: 1;
+}
+
+.header-right h2 {
+    font-size: 24px;
+    color: #ffffff;
+}
+
+.header-divider {
+    width: 1px;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.2);
+    margin: 0 20px;
+}
+
+canvas {
+    width: 100%;
+    max-width: 400px; /* Optional: limit max width */
+    border-radius: 10px;
+}
+.stats-section {
+    display: flex;
+    gap: 20px;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.stats-box {
+    background-color: #3a3a4a;
+    border-radius: 10px;
+    padding: 20px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    position: relative;
+}
+
+.stats-box h3 {
+    color: #ffffff;
+    font-size: 20px;
+    margin-bottom: 15px;
+}
+
+.stats-box canvas {
+    margin-bottom: 15px;
+}
+
+.stats-box p {
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <!-- Profile Box with Driver Details and Edit Button -->
+        <div class="profile-box">
+            <img src="https://via.placeholder.com/100" alt="Profile Picture">
+            <div class="profile-details">
+                <h3>Driver Name</h3>
+                <p>Rank: 12,345</p>
+                <p>Country: India</p>
+            </div>
+            <!-- Edit Button -->
+            <button class="edit-btn">Edit</button>
+        </div>
+    
+        <!-- Driver List -->
+        <div class="drivers-list">
+            <h3>Drivers List</h3>
+            <ul>
+                <li>Driver 1</li>
+                <li>Driver 2</li>
+                <li>Driver 3</li>
+                <li>Driver 4</li>
+            </ul>
+        </div>
+    </div>
+    
+    
+    <div class="main-content">
+        <div class="header">
+            <div class="header-left">
+                <h3>Ranking</h3>
+                <canvas id="lineGraph" width="400" height="100"></canvas>
+                <div class="graph-dates">
+                    <span class="date-left">Jan 1, 2024</span>
+                    <span class="date-right">Jan 31, 2024</span>
+                </div>
+            </div>
+            <div class="header-divider"></div> <!-- Divider Line -->
+            <div class="header-right">
+                <h2>Driving Behavior Dashboard</h2>
+            </div>
+        </div>
+        
+        <div class="stats-section">
+            <!-- Speed Box with Graph -->
+            <div class="stats-box">
+                <h3>Speed</h3>
+                <canvas id="speedCanvas" width="300" height="200"></canvas>
+                <p>Speed: <span id="speedValue">75</span>%</p>
+            </div>
+            <!-- Braking Box -->
+            <div class="stats-box">
+                <h3>Braking</h3>
+                <div class="progress-bar">
+                    <div class="progress" style="width: 60%;"></div>
+                </div>
+                <p>60%</p>
+            </div>
+        
+            <!-- Acceleration Box with Graph -->
+    <div class="stats-box">
+        <h3>Acceleration</h3>
+        <canvas id="accelerationGraph" width="300" height="150"></canvas>
+        <p>Acceleration: 85%</p>
+    </div>
+        </div>
+        
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const ctx = document.getElementById('lineGraph').getContext('2d');
+    const lineGraph = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: Array(30).fill(''), // Empty labels, no need for specific dates
+            datasets: [{
+                data: [1200, 1150, 1250, 1180, 1300, 1220, 1350, 1280, 1400, 1380, 1420, 1450, 1500, 1550, 1600, 1620, 1650, 1680, 1700, 1720, 1750, 1770, 1800, 1820, 1850, 1880, 1900, 1930, 1950, 1980], // Rank monitoring data (example)
+                borderColor: '#4a90e2',
+                fill: false,
+                borderWidth: 2,
+                pointRadius: 0, // Remove small circles (points) on the graph line
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                x: {
+                    display: false, // Hide x-axis as no labels are needed
+                },
+                y: {
+                    display: false, // Hide y-axis numbers
+                }
+            },
+            plugins: {
+                tooltip: {
+                    enabled: true, // Enable tooltips to show when hovering over the line
+                    mode: 'index', // Show tooltip for the point closest to the cursor
+                    intersect: false, // Allow tooltip to show even when hovering over the line between points
+                    callbacks: {
+                        // Customizing the tooltip content to show rank
+                        title: function(tooltipItem) {
+                            // No title needed, returning empty string
+                            return '';
+                        },
+                        label: function(tooltipItem) {
+                            // Display the rank as the tooltip label
+                            const rank = tooltipItem.raw; // Get the rank from the data
+                            return `Rank: ${rank}`;
+                        }
+                    }
+                }
+            }
+        }
+    });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+       const accelerationCtx = document.getElementById('accelerationGraph').getContext('2d');
+    const accelerationGraph = new Chart(accelerationCtx, {
+        type: 'line', // Line chart for accelerometer-like movement
+        data: {
+            labels: Array(30).fill(''), // Empty labels for clean graph
+            datasets: [{
+                label: 'Acceleration',
+                data: [0, 10, 20, 30, 50, 60, 70, 80, 85, 90, 95, 100, 90, 80, 70, 60, 50, 40, 30, 20, 10, 5, 15, 25, 30, 40, 50, 60, 70, 80], // Example acceleration data
+                borderColor: '#e94e77',
+                fill: false,
+                borderWidth: 2,
+                pointRadius: 0,
+                tension: 0.4,
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                x: {
+                    display: false, // Hides x-axis
+                },
+                y: {
+                    min: 0,
+                    max: 100, // Set the max value to 100 for acceleration percentage
+                    ticks: {
+                        stepSize: 20
+                    },
+                    grid: {
+                        color: '#ffffff' // White grid lines for visibility
+                    }
+                }
+            },
+            plugins: {
+                tooltip: {
+                    enabled: true,
+                    mode: 'nearest',
+                    intersect: false,
+                    callbacks: {
+                        title: function(tooltipItem) {
+                            return 'Acceleration: ' + tooltipItem[0].raw + '%';
+                        },
+                    }
+                }
+            }
+        }
+    });
+</script>
+<canvas id="speedCanvas" width="300" height="200"></canvas>
+
+<script>
+    const speedCanvas = document.getElementById('speedCanvas');
+    const ctxx = speedCanvas.getContext('2d');
+
+    // Function to draw the semi-circle speedometer
+    function drawSpeedometer(speed) {
+        const radius = 100;
+        const centerX = 150;
+        const centerY = 150;
+        const startAngle = Math.PI; // 180 degrees (start of the semi-circle)
+        const endAngle = 0; // 0 degrees (end of the semi-circle)
+
+        // Clear the previous drawing
+        ctxx.clearRect(0, 0, speedCanvas.width, speedCanvas.height);
+
+        // Draw the semi-circle background
+        ctxx.beginPath();
+        ctxx.arc(centerX, centerY, radius, startAngle, endAngle, false);
+        ctxx.lineWidth = 10;
+        ctxx.strokeStyle = '#444'; // Darker color for the background
+        ctxx.stroke();
+        ctxx.closePath();
+
+        // Draw the foreground (filled portion based on speed)
+        const speedAngle = (speed / 260) * Math.PI; // Convert speed to an angle
+        ctxx.beginPath();
+        ctxx.arc(centerX, centerY, radius, startAngle, startAngle - speedAngle, false);
+        ctxx.lineWidth = 10;
+        ctxx.strokeStyle = '#4a90e2'; // Color for the speed (blue)
+        ctxx.stroke();
+        ctxx.closePath();
+
+        // Draw the text for speed percentage
+        ctxx.font = '20px Arial';
+        ctxx.fillStyle = '#fff';
+        ctxx.textAlign = 'center';
+        ctxx.textBaseline = 'middle';
+        ctxx.fillText(`${speed} km/h`, centerX, centerY + 30); // Adjusted position for speed text
+
+        // Draw a single string/line pointing to the current speed
+        const angle = (speed / 260) * Math.PI; // Angle based on the speed percentage
+        const lineX = centerX + (radius + 10) * Math.cos(angle + Math.PI); // Line pointing to the speed
+        const lineY = centerY - (radius + 10) * Math.sin(angle + Math.PI);
+
+        // Draw the line (pointer)
+        ctxx.beginPath();
+        ctxx.moveTo(centerX, centerY);
+        ctxx.lineTo(lineX, lineY);
+        ctxx.lineWidth = 3;
+        ctxx.strokeStyle = '#ff0000'; // Red color for the pointer
+        ctxx.stroke();
+        ctxx.closePath();
+
+        // Draw speed numbers on the semi-circle (0, 30, 60, ..., 260)
+        const numberInterval = 30; // Interval for numbers (30 km/h)
+        ctxx.font = '16px Arial';
+        ctxx.fillStyle = '#fff';
+        const totalNumbers = 9; // Total number of labels (0, 30, 60, ..., 260)
+        
+        for (let i = 0; i <= totalNumbers; i++) {
+            const angleForLabel = startAngle - (i / totalNumbers) * Math.PI; // Calculate angle for each label (evenly distributed)
+            const labelX = centerX + (radius + 15) * Math.cos(angleForLabel); // Position for the number
+            const labelY = centerY - (radius + 15) * Math.sin(angleForLabel);
+            ctxx.fillText(i * numberInterval, labelX, labelY); // Draw the text (i * 30 gives the numbers)
+        }
+    }
+
+    // Initial Speed value
+    let speed = 75;  // Example initial speed
+    document.getElementById('speedValue').textContent = speed;
+    drawSpeedometer(speed);
+
+    // Update speed and redraw on change
+    function updateSpeed(newSpeed) {
+        speed = newSpeed;
+        document.getElementById('speedValue').textContent = speed;
+        drawSpeedometer(speed);
+    }
+
+    // Example: Update the speed after 2 seconds to 130 km/h
+    setTimeout(() => updateSpeed(130), 2000); // Change the speed to 130 km/h after 2 seconds
+</script>
+
+
+</body>
+
+</html> 
