@@ -14,22 +14,36 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = $_POST['password'];
 
     // Fetch the driver details from the database
-    $query = "SELECT * FROM driver_details WHERE email = '$email'";
-    $result = $conn->query($query);
+    $stmt = $conn->prepare("SELECT * FROM driver_details WHERE email = ?");
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
 
         // Verify the password
-        if ($password === $row['password']) { // Plain text comparison
-            echo "Login successful. Welcome, " . htmlspecialchars($row['driver_name']) . "!";
+        //if ($password === $row['password']) { // Plain text comparison
+
+        if (password_verify($password, $row['password'])) {
+            session_start();
+
+            // Store driver details in session
+            $_SESSION['driver_id'] = $row['id'];
+            $_SESSION['driver_name'] = $row['driver_name'];
+            $_SESSION['driver_email'] = $row['email'];
+            $_SESSION['driver_phone'] = $row['phone'];
+            $_SESSION['car_registration_number'] = $row['car_registration_number'];
+            $_SESSION['driver_photo'] = $row['driver_photo'];
+            $_SESSION['license_photo'] = $row['license_photo'];
+            header("Location: driver_profile.php");
+            exit();
         } else {
-            echo "Incorrect password.";
+            echo "<script>alert('Incorrect password.'); window.location.href='driver_login.html';</script>";
         }
     } else {
-        echo "No user found with this email.";
+        echo "<script>alert('No user found with this email.'); window.location.href='driver_login.html';</script>";
     }
 }
-
 $conn->close();
 ?>
