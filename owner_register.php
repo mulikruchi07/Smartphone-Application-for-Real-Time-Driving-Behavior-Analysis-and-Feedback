@@ -11,9 +11,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $owner_name = isset($_POST['owner-name']) ? $conn->real_escape_string($_POST['owner-name']) : '';
     $email = isset($_POST['email']) ? $conn->real_escape_string($_POST['email']) : '';
     $phone = isset($_POST['phone']) ? $conn->real_escape_string($_POST['phone']) : '';
-    $password = isset($_POST['password']) ? $conn->real_escape_string($_POST['password']) : ''; /*? password_hash($_POST['password'], PASSWORD_DEFAULT) : '';*/
+    // $password = isset($_POST['password']) ? $conn->real_escape_string($_POST['password']) : '';  Encrypt into hash password()
+    $password = isset($_POST['password']) ? password_hash($_POST['password'], PASSWORD_BCRYPT) : '';
     $car_model = isset($_POST['car-model']) ? $conn->real_escape_string($_POST['car-model']) : '';
     $car_registration_number = isset($_POST['car_registration_number']) ? $conn->real_escape_string($_POST['car_registration_number']) : '';
+
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        echo "Invalid email format.";
+        exit();
+    }
 
     // Handle file uploads
     $car_photo = isset($_FILES['car-photo']) ? uploadFile($_FILES['car-photo'], 'car_photos') : '';
@@ -25,7 +31,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             VALUES ('$owner_name', '$email', '$phone', '$password', '$car_model', '$car_photo', '$car_registration_number', '$owner_photo', '$owner_license_photos')";
 
     if ($conn->query($sql) === TRUE) {
-        echo "Registration successful!";
+        session_start();
+        $owner_id = $conn->insert_id;
+        $_SESSION['owner_id'] = $owner_id;
+        $_SESSION['owner_name'] = $owner_name;
+        $_SESSION['email'] = $email;
+
+        header("Location: owner_profile.php");
+        exit();
     } else {
         echo "Error: " . $sql . "<br>" . $conn->error;
     }
@@ -34,20 +47,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 
 // Function to handle file upload
-function uploadFile($file, $folder) {
+function uploadFile($file, $folder)
+{
     // Create directory if it doesn't exist
     $target_dir = "uploads/" . $folder . "/";
     if (!file_exists($target_dir)) {
         mkdir($target_dir, 0777, true); // Set proper permissions
     }
 
-    $target_file = $target_dir . basename($file["name"]);
-    
-    // Check if the file is a valid image (optional)
+    $unique_name = uniqid() . "_" . basename($file["name"]);
+    $target_file = $target_dir . $unique_name;
+
+    // Attempt file upload
     if (move_uploaded_file($file["tmp_name"], $target_file)) {
         return $target_file;
     } else {
-        return '';  // Return empty string if upload fails
+        echo "Error uploading " . $file["name"];
+        return '';
     }
 }
 ?>
