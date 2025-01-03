@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Cars</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background-color: #1E2A3A;
+            color: #F4F4F8;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .title {
+            text-align: center;
+            font-size: 26px;
+            font-weight: bold;
+            margin: 20px 0 40px;
+            color: #ffffff;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .car-box {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: #26374D;
+            color: #ffffff;
+            border-radius: 12px;
+            padding: 16px;
+            margin: 20px 0;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease-in-out, background-color 0.3s ease;
+        }
+
+        .car-details {
+            font-size: 15px;
+            line-height: 1.5;
+            flex-grow: 1;
+        }
+
+        .car-photo {
+            width: 90px;
+            height: 60px;
+            border-radius: 10px;
+            object-fit: cover;
+            margin-left: 20px;
+        }
+
+        .dropdown {
+            position: absolute;
+            top: 140%;
+            right: 20px;
+            display: none;
+            background-color: #3C4A5C;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            transform: translateY(-50%);
+            z-index: 1;
+        }
+
+        .dropdown-content a {
+            color: white;
+            padding: 8px 12px;
+            text-decoration: none;
+            display: block;
+            border-radius: 8px;
+            transition: background-color 0.3s ease;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #4E5D6E;
+        }
+
+        .car-box:hover .dropdown {
+            display: block;
+        }
+
+        .add-car-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #81bde6;
+            color: #1E2A3A;
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background-color: #26374D;
+            color: #F4F4F8;
+            border-radius: 12px;
+            padding: 20px 30px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content input,
+        .modal-content button {
+            width: 100%;
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 8px;
+            border: none;
+            font-size: 14px;
+        }
+
+        .modal-content input {
+            margin: 10px 0;
+            /* Add margin between input fields */
+            box-sizing: border-box;
+            /* Ensure consistent spacing */
+        }
+
+
+        .cancel-btn {
+            background-color: #F05050;
+            color: white;
+            margin-top: 10px;
+        }
+
+        .form-btns {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+        }
+
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background-color: #26374D;
+            color: #F4F4F8;
+            font-size: 18px;
+            padding: 10px 15px;
+            border-radius: 8px;
+            text-decoration: none;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .back-button i {
+            margin-right: 8px;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .input-block {
+            margin-bottom: 15px;
+        }
+
+        .input-block label {
+            display: block;
+            margin-bottom: 5px;
+            color: #F4F4F8;
+            font-size: 14px;
+        }
+
+        .input-block input {
+            width: 100%;
+            padding: 8px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+
+        @media (max-width: 600px) {
+            .car-box {
+                flex-direction: row;
+                align-items: center;
+            }
+
+            .car-photo {
+                width: 70px;
+                height: 45px;
+            }
+
+            .car-details {
+                font-size: 13px;
+            }
+
+            .add-car-btn {
+                width: 50px;
+                height: 50px;
+                font-size: 20px;
+            }
+
+            .back-button {
+                font-size: 14px;
+                padding: 8px 12px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="title">Manage Cars</div>
+
+        <div id="carList">
+        </div>
+    </div>
+
+    <a href="owner_profile.php" class="back-button">
+        <i class="fas fa-arrow-left"></i>
+    </a>
+
+    <button class="add-car-btn" id="addCarBtn">
+        <i class="fas fa-plus"></i>
+    </button>
+
+    <div class="modal" id="addCarModal">
+        <div class="modal-content">
+            <h2>Add New Car</h2>
+            <div class="input-block">
+                <label for="regInput">Registration Number:</label>
+                <input type="text" id="regInput" placeholder="Enter Registration Number" required>
+            </div>
+            <div class="input-block">
+                <label for="modelInput">Car Model:</label>
+                <input type="text" id="modelInput" placeholder="Enter Car Model" required>
+            </div>
+            <div class="input-block">
+                <label for="photoInput">Car Image:</label>
+                <input type="file" id="photoInput" accept="image/*" required>
+            </div>
+
+            <div class="form-btns">
+                <button id="saveCarBtn">Add Car</button>
+                <button class="cancel-btn" id="cancelBtn">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const addCarBtn = document.getElementById('addCarBtn');
+        const addCarModal = document.getElementById('addCarModal');
+        const cancelBtn = document.getElementById('cancelBtn');
+        const saveCarBtn = document.getElementById('saveCarBtn');
+        const carList = document.getElementById('carList');
+        const regInput = document.getElementById('regInput');
+        let carEntries = [];
+
+        let isEditing = false;
+        let currentEditingCar = null;
+
+        const createCarEntry = (registration, model, photoURL) => {
+            const carBox = document.createElement('div');
+            carBox.className = 'car-box';
+
+            carBox.innerHTML = `
+        <div class="car-details">
+            <div><strong>Registration:</strong> ${registration}</div>
+            <div><strong>Model:</strong> ${model}</div>
+        </div>
+        <img src="${photoURL}" alt="Car Photo" class="car-photo">
+        <div class="dropdown">
+            <div class="dropdown-content">
+                <a href="#" class="edit-btn">Edit</a>
+                <a href="#" class="delete-btn" style="color: red;">Delete</a>
+            </div>
+        </div>
+    `;
+
+            const editBtn = carBox.querySelector('.edit-btn');
+            editBtn.addEventListener('click', () => {
+                editBtnHandler(registration, model, photoURL, carBox);
+            });
+
+            const deleteBtn = carBox.querySelector('.delete-btn');
+            deleteBtn.addEventListener('click', () => {
+                carList.removeChild(carBox);
+                carEntries = carEntries.filter(car => car.registration !== registration);
+            });
+
+            carList.appendChild(carBox);
+        };
+
+        const resetForm = () => {
+            regInput.value = '';
+            document.getElementById('modelInput').value = '';
+            document.getElementById('photoInput').value = ''; // Clear file input
+            isEditing = false;
+            currentEditingCar = null;
+            addCarModal.classList.remove('show');
+        };
+
+        saveCarBtn.addEventListener('click', () => {
+            const reg = regInput.value.trim();
+            const model = document.getElementById('modelInput').value.trim();
+            const photoInput = document.getElementById('photoInput');
+
+            if (!reg || !model || !photoInput.files[0]) {
+                alert('Please fill all fields correctly!');
+                return;
+            }
+
+            // Check for duplicate registration number
+            if (!isEditing && carEntries.some(car => car.registration === reg)) {
+                alert('Car with this registration number already exists!');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                if (isEditing && currentEditingCar) {
+                    // Update existing car
+                    const details = currentEditingCar.querySelector('.car-details');
+                    const img = currentEditingCar.querySelector('.car-photo');
+                    details.innerHTML = `
+                <div><strong>Registration:</strong> ${reg}</div>
+                <div><strong>Model:</strong> ${model}</div>
+            `;
+                    img.src = e.target.result;
+                } else {
+                    // Add a new car
+                    carEntries.push({ registration: reg, model: model, photoURL: e.target.result });
+                    createCarEntry(reg, model, e.target.result);
+                }
+
+                resetForm();
+            };
+            reader.readAsDataURL(photoInput.files[0]);
+        });
+
+        cancelBtn.addEventListener('click', resetForm);
+
+        addCarBtn.addEventListener('click', () => {
+            resetForm(); // Clear all fields
+            addCarModal.classList.add('show');
+        });
+        const modalHeading = document.querySelector(".modal-content h2");
+        const editBtnHandler = (registration, model, photoURL, carBox) => {
+            isEditing = true;
+            currentEditingCar = carBox;
+
+            // Pre-fill the form with existing data for editing
+            regInput.value = registration;
+            document.getElementById('modelInput').value = model;
+            // Update form heading and button text
+            modalHeading.textContent = "Edit Car";
+            saveCarBtn.textContent = "Save Changes";
+            addCarModal.classList.add('show');
+        };
+
+        document.getElementById('photoInput').addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            const photoPreview = document.getElementById('photoPreview');
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    photoPreview.src = event.target.result;
+                    photoPreview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            } else {
+                photoPreview.style.display = 'none';
+                photoPreview.src = '';
+            }
+        });
+
+    </script>
+</body>
+
+</html>
