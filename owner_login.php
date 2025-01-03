@@ -1,46 +1,58 @@
 <?php
-session_start();  // Start the session to track login status
+session_start();
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Database connection
-    $conn = new mysqli('localhost', 'root', '', 'owner_registration');  // Adjust database connection details as needed
+$conn = new mysqli('localhost', 'root', '', 'owner_registration');
 
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
-    }
-
-    // Sanitize the input values
-    $email = isset($_POST['email']) ? $conn->real_escape_string($_POST['email']) : '';
-    $password = isset($_POST['password']) ? $_POST['password'] : ''; // Don't hash the password yet
-
-    // Query the database to find the user with the provided email
-    $sql = "SELECT * FROM owner_details WHERE email = '$email' LIMIT 1";
-    $result = $conn->query($sql);
-
-    if ($result->num_rows > 0) {
-        // Fetch the user data from the database
-        $user = $result->fetch_assoc();
-
-        // Verify the provided password with the hashed password stored in the database
-        if ($password == $user['password']) {
-            $_SESSION['user_id'] = $user['id'];
-            $_SESSION['owner_name'] = $user['owner_name']; 
-            header("Location: dashboard.html");
-            exit();
-        }else {
-            $error_message = "Incorrect password!";
-        }
-        
-    } else {
-        $error_message = "No account found with that email!";
-    }
-
-    $conn->close();
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
 }
+
+// Handle form submission
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
+    $password = $_POST['password'];
+
+    if (filter_var($email, FILTER_VALIDATE_EMAIL) && !empty($password)) {
+        // Prepared statement to fetch user
+        $stmt = $conn->prepare("SELECT * FROM owner_details WHERE email = ?");
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            $user = $result->fetch_assoc();
+
+            // Verify the provided password without the hashed password stored in the database
+            //if ($password,$user['password']) {
+
+            if (password_verify($password, $user['password'])) {
+                session_regenerate_id();
+
+                $_SESSION['owner_id'] = $user['owner_id'];
+                $_SESSION['owner_name'] = $user['owner_name'];
+                $_SESSION['owner_email'] = $user['email'];
+                header("Location: owner_profile.php"); // Redirect to a PHP profile page
+                exit();
+            } else {
+                $error_message = "Incorrect password!";
+            }
+        } else {
+            $error_message = "No account found with that email!";
+        }
+
+        $stmt->close();
+    } else {
+        $error_message = "Invalid email format or empty password!";
+    }
+}
+
+$conn->close();
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -71,7 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             text-align: center;
             color: #4CAF50;
             margin-bottom: 20px;
-        }
+        } 
 
         /* Labels */
         label {
@@ -81,7 +93,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         /* Text inputs */
-        input[type="email"], input[type="password"] {
+        input[type="email"],
+        input[type="password"] {
             width: 95%;
             padding: 10px;
             margin-bottom: 20px;
@@ -92,7 +105,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             transition: border-color 0.3s ease;
         }
 
-        input[type="email"]:focus, input[type="password"]:focus {
+        input[type="email"]:focus,
+        input[type="password"]:focus {
             border-color: #4CAF50;
         }
 
@@ -139,6 +153,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <h1>Owner Login</h1>
@@ -161,4 +176,5 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </form>
     </div>
 </body>
+
 </html>
