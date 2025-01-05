@@ -141,9 +141,7 @@
 
         .modal-content input {
             margin: 10px 0;
-            /* Add margin between input fields */
             box-sizing: border-box;
-            /* Ensure consistent spacing */
         }
 
 
@@ -232,9 +230,7 @@
 <body>
     <div class="container">
         <div class="title">Manage Cars</div>
-
-        <div id="carList">
-        </div>
+        <div id="carList"></div>
     </div>
 
     <a href="owner_profile.php" class="back-button">
@@ -259,8 +255,8 @@
             <div class="input-block">
                 <label for="photoInput">Car Image:</label>
                 <input type="file" id="photoInput" accept="image/*" required>
+                <img id="photoPreview" style="display:none;" alt="Photo Preview" width="100px">
             </div>
-
             <div class="form-btns">
                 <button id="saveCarBtn">Add Car</button>
                 <button class="cancel-btn" id="cancelBtn">Cancel</button>
@@ -275,126 +271,160 @@
         const saveCarBtn = document.getElementById('saveCarBtn');
         const carList = document.getElementById('carList');
         const regInput = document.getElementById('regInput');
-        let carEntries = [];
-
+        const modalHeading = document.querySelector('.modal-content h2');
         let isEditing = false;
         let currentEditingCar = null;
 
-        const createCarEntry = (registration, model, photoURL) => {
+        // Reset form and close modal
+        const resetForm = () => {
+            regInput.value = '';
+            document.getElementById('modelInput').value = '';
+            const photoInput = document.getElementById('photoInput');
+            photoInput.value = '';
+            const photoPreview = document.getElementById('photoPreview');
+            photoPreview.style.display = 'none';
+            photoPreview.src = '';
+            addCarModal.classList.remove('show');
+            isEditing = false;
+            currentEditingCar = null;
+            modalHeading.textContent = 'Add New Car';
+            saveCarBtn.textContent = 'Add Car';
+        };
+
+        // Fetch cars from the server
+        const fetchCars = () => {
+            fetch('car_manage.php')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to fetch cars');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (Array.isArray(data)) {
+                        carList.innerHTML = '';
+                        data.forEach(car => createCarEntry(car.registration_number, car.car_model, car.car_image_path, car.id));
+                    } else if (data.error) {
+                        alert(data.error);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching cars:', error);
+                    alert('Failed to load cars. Please try again later.');
+                });
+        };
+
+        // Create a car entry in the DOM
+        const createCarEntry = (registration, model, photoURL, id) => {
             const carBox = document.createElement('div');
             carBox.className = 'car-box';
-
+            carBox.dataset.id = id;
             carBox.innerHTML = `
-        <div class="car-details">
-            <div><strong>Registration:</strong> ${registration}</div>
-            <div><strong>Model:</strong> ${model}</div>
-        </div>
-        <img src="${photoURL}" alt="Car Photo" class="car-photo">
-        <div class="dropdown">
-            <div class="dropdown-content">
-                <a href="#" class="edit-btn">Edit</a>
-                <a href="#" class="delete-btn" style="color: red;">Delete</a>
-            </div>
-        </div>
-    `;
-
+                <div class="car-details">
+                    <div><strong>Registration:</strong> ${registration}</div>
+                    <div><strong>Model:</strong> ${model}</div>
+                </div>
+                <img src="${photoURL}" alt="Car Photo" class="car-photo">
+                <div class="dropdown">
+                    <div class="dropdown-content">
+                        <a href="#" class="edit-btn">Edit</a>
+                        <a href="#" class="delete-btn" style="color: red;">Delete</a>
+                    </div>
+                </div>
+            `;
             const editBtn = carBox.querySelector('.edit-btn');
-            editBtn.addEventListener('click', () => {
-                editBtnHandler(registration, model, photoURL, carBox);
+            const deleteBtn = carBox.querySelector('.delete-btn');
+
+            // Edit button handler
+            editBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                isEditing = true;
+                currentEditingCar = carBox;
+                regInput.value = registration;
+                document.getElementById('modelInput').value = model;
+                const photoPreview = document.getElementById('photoPreview');
+                photoPreview.src = photoURL;
+                photoPreview.style.display = 'block';
+                modalHeading.textContent = 'Edit Car';
+                saveCarBtn.textContent = 'Save Changes';
+                addCarModal.classList.add('show');
             });
 
-            const deleteBtn = carBox.querySelector('.delete-btn');
+            // Delete button handler
             deleteBtn.addEventListener('click', () => {
-                carList.removeChild(carBox);
-                carEntries = carEntries.filter(car => car.registration !== registration);
+                fetch('car_manage.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: `action=delete&id=${id}`
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            carList.removeChild(carBox);
+                        } else {
+                            alert(`Failed to delete car: ${data.error}`);
+                        }
+                    })
+                    .catch(error => console.error('Error deleting car:', error));
             });
 
             carList.appendChild(carBox);
         };
 
-        const resetForm = () => {
-            regInput.value = '';
-            document.getElementById('modelInput').value = '';
-            document.getElementById('photoInput').value = ''; // Clear file input
-            isEditing = false;
-            currentEditingCar = null;
-            addCarModal.classList.remove('show');
-        };
-
+        // Handle Save button click
         saveCarBtn.addEventListener('click', () => {
             const reg = regInput.value.trim();
             const model = document.getElementById('modelInput').value.trim();
             const photoInput = document.getElementById('photoInput');
+            const formData = new FormData();
 
-            if (!reg || !model || !photoInput.files[0]) {
+            if (!reg || !model || (!isEditing && !photoInput.files[0])) {
                 alert('Please fill all fields correctly!');
                 return;
             }
 
-            // Check for duplicate registration number
-            if (!isEditing && carEntries.some(car => car.registration === reg)) {
-                alert('Car with this registration number already exists!');
-                return;
+            const action = isEditing ? 'edit' : 'add';
+            if (isEditing) {
+                formData.append('id', currentEditingCar.dataset.id);
+            }
+            formData.append('action', action);
+            formData.append('registration', reg);
+            formData.append('model', model);
+            if (photoInput.files[0]) {
+                formData.append('image', photoInput.files[0]);
             }
 
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                if (isEditing && currentEditingCar) {
-                    // Update existing car
-                    const details = currentEditingCar.querySelector('.car-details');
-                    const img = currentEditingCar.querySelector('.car-photo');
-                    details.innerHTML = `
-                <div><strong>Registration:</strong> ${reg}</div>
-                <div><strong>Model:</strong> ${model}</div>
-            `;
-                    img.src = e.target.result;
-                } else {
-                    // Add a new car
-                    carEntries.push({ registration: reg, model: model, photoURL: e.target.result });
-                    createCarEntry(reg, model, e.target.result);
-                }
-
-                resetForm();
-            };
-            reader.readAsDataURL(photoInput.files[0]);
+            fetch('car_manage.php', {
+                method: 'POST',
+                body: formData,
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert(isEditing ? 'Car updated successfully!' : 'Car added successfully!');
+                        resetForm();
+                        fetchCars();
+                    } else {
+                        alert(`Error: ${data.error}`);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error saving car:', error);
+                    alert('Failed to save car. Please try again later.');
+                });
         });
 
+        // Cancel button handler
         cancelBtn.addEventListener('click', resetForm);
 
+        // Add Car button handler
         addCarBtn.addEventListener('click', () => {
-            resetForm(); // Clear all fields
+            resetForm();
             addCarModal.classList.add('show');
         });
-        const modalHeading = document.querySelector(".modal-content h2");
-        const editBtnHandler = (registration, model, photoURL, carBox) => {
-            isEditing = true;
-            currentEditingCar = carBox;
 
-            // Pre-fill the form with existing data for editing
-            regInput.value = registration;
-            document.getElementById('modelInput').value = model;
-            // Update form heading and button text
-            modalHeading.textContent = "Edit Car";
-            saveCarBtn.textContent = "Save Changes";
-            addCarModal.classList.add('show');
-        };
-
-        document.getElementById('photoInput').addEventListener('change', (e) => {
-            const file = e.target.files[0];
-            const photoPreview = document.getElementById('photoPreview');
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = (event) => {
-                    photoPreview.src = event.target.result;
-                    photoPreview.style.display = 'block';
-                };
-                reader.readAsDataURL(file);
-            } else {
-                photoPreview.style.display = 'none';
-                photoPreview.src = '';
-            }
-        });
-
+        // Initialize by fetching cars
+        fetchCars();
     </script>
 </body>
 
