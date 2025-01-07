@@ -18,6 +18,7 @@ $result = $stmt->get_result();
 
 if ($result->num_rows > 0) {
     $owner = $result->fetch_assoc();
+    $_SESSION['owner_email'] = $owner['email'];  // Store the email in the session inorder to retrive in car manage
 } else {
     echo "Owner not found.";
     exit();
@@ -235,7 +236,7 @@ $conn->close();
         <!-- Buttons Section -->
         <div class="button-container">
             <a href="car_manage.html"><button class="button"><i class="fas fa-car"></i>Manage Cars</button></a>
-            <a href="#"><button class="button"><i class="fas fa-user-cog"></i>Manage Driver</button></a>
+            <a href="driver_manage.php"><button class="button"><i class="fas fa-user-cog"></i>Manage Driver</button></a>
             <a href="#"><button class="button"><i class="fas fa-users"></i>Family</button></a>
             <a href="#"><button class="button"><i class="fas fa-paint-brush"></i>Theme</button></a>
             <a href="#"><button class="button"><i class="fas fa-cogs"></i>Account</button></a>
