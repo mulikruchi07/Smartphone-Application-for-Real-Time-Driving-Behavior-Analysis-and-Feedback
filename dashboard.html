@@ -101,10 +101,10 @@
         // Motion State
         const motionState = {
             speed: 0, // Speed (km/h)
-            cornering: 0, // Angular velocity
-            braking: 0 // Acceleration
+            cornering: 0, // Angular velocity (degrees/sec)
+            braking: 0 // Acceleration (m/s²)
         };
-
+    
         // Geolocation for Speed
         if ('geolocation' in navigator) {
             navigator.geolocation.watchPosition(
@@ -121,32 +121,25 @@
         } else {
             alert("Geolocation not supported by your browser.");
         }
-
+    
         // DeviceMotion for Braking and Cornering
-        if (typeof DeviceMotionEvent.requestPermission === 'function') {
-    // For iOS and some Android devices
-    document.body.addEventListener('click', () => {
-        DeviceMotionEvent.requestPermission()
-            .then((permissionState) => {
-                if (permissionState === 'granted') {
-                    console.log('Motion permission granted');
-                    window.addEventListener('devicemotion', handleDeviceMotion);
-                } else {
-                    alert('Motion permission denied');
-                }
-            })
-            .catch(console.error);
-    });
-} else {
-    // For browsers that don't need explicit permission
-    if (window.DeviceMotionEvent) {
-        window.addEventListener('devicemotion', handleDeviceMotion);
-    } else {
-        alert("DeviceMotion not supported by your browser.");
-    }
-}
-
+        if (window.DeviceMotionEvent) {
+            window.addEventListener('devicemotion', (event) => {
+                // Braking: Use accelerationIncludingGravity along the z-axis
+                const brakingForce = event.accelerationIncludingGravity?.z || 0; // m/s²
+                motionState.braking = brakingForce.toFixed(2);
+                document.getElementById('brakingValue').innerText = motionState.braking;
+    
+                // Cornering: Use rotationRate along the gamma axis (degrees/sec)
+                const corneringRate = event.rotationRate?.gamma || 0; // Degrees/sec
+                motionState.cornering = corneringRate.toFixed(2);
+                document.getElementById('corneringValue').innerText = motionState.cornering;
+            });
+        } else {
+            alert("DeviceMotion not supported by your browser.");
+        }
     </script>
+    
 </body>
 
 </html>
