@@ -98,47 +98,68 @@
     </div>
 
     <script>
-        // Motion State
-        const motionState = {
-            speed: 0, // Speed (km/h)
-            cornering: 0, // Angular velocity (degrees/sec)
-            braking: 0 // Acceleration (m/s²)
-        };
-    
-        // Geolocation for Speed
-        if ('geolocation' in navigator) {
-            navigator.geolocation.watchPosition(
-                (position) => {
-                    const speed = position.coords.speed || 0; // Speed in m/s
-                    motionState.speed = (speed * 3.6).toFixed(2); // Convert to km/h
-                    document.getElementById('speedValue').innerText = motionState.speed;
-                },
-                (error) => {
-                    console.error("Geolocation error:", error.message);
-                },
-                { enableHighAccuracy: true }
-            );
-        } else {
-            alert("Geolocation not supported by your browser.");
-        }
-    
-        // DeviceMotion for Braking and Cornering
-        if (window.DeviceMotionEvent) {
-            window.addEventListener('devicemotion', (event) => {
-                // Braking: Use accelerationIncludingGravity along the z-axis
-                const brakingForce = event.accelerationIncludingGravity?.z || 0; // m/s²
-                motionState.braking = brakingForce.toFixed(2);
+    const motionState = {
+        speed: 0, // Speed (km/h)
+        cornering: 0, // Angular velocity (degrees/sec)
+        braking: 0, // Acceleration (m/s²)
+    };
+
+    // Parameters for smoothing and thresholds
+    let brakingHistory = []; // Stores recent braking values
+    const BRAKING_THRESHOLD = 1.0; // Minimum acceleration to detect braking
+    const SMOOTHING_WINDOW = 5; // Number of values for moving average
+
+    // Geolocation for Speed
+    if ('geolocation' in navigator) {
+        navigator.geolocation.watchPosition(
+            (position) => {
+                const speed = position.coords.speed || 0; // Speed in m/s
+                motionState.speed = (speed * 3.6).toFixed(2); // Convert to km/h
+                document.getElementById('speedValue').innerText = motionState.speed;
+            },
+            (error) => {
+                console.error("Geolocation error:", error.message);
+            },
+            { enableHighAccuracy: true }
+        );
+    } else {
+        alert("Geolocation not supported by your browser.");
+    }
+
+    // DeviceMotion for Braking and Cornering
+    if (window.DeviceMotionEvent) {
+        window.addEventListener('devicemotion', (event) => {
+            // Braking: Calculate deceleration along z-axis
+            let brakingForce = Math.abs(event.accelerationIncludingGravity?.z || 0); // Absolute value
+
+            // Apply threshold to filter out small fluctuations
+            if (brakingForce > BRAKING_THRESHOLD) {
+                brakingHistory.push(brakingForce);
+
+                // Keep only the last N values for smoothing
+                if (brakingHistory.length > SMOOTHING_WINDOW) {
+                    brakingHistory.shift();
+                }
+
+                // Calculate moving average
+                const averageBraking = (
+                    brakingHistory.reduce((sum, value) => sum + value, 0) / brakingHistory.length
+                ).toFixed(2);
+
+                motionState.braking = averageBraking;
                 document.getElementById('brakingValue').innerText = motionState.braking;
-    
-                // Cornering: Use rotationRate along the gamma axis (degrees/sec)
-                const corneringRate = event.rotationRate?.gamma || 0; // Degrees/sec
-                motionState.cornering = corneringRate.toFixed(2);
-                document.getElementById('corneringValue').innerText = motionState.cornering;
-            });
-        } else {
-            alert("DeviceMotion not supported by your browser.");
-        }
-    </script>
+            }
+
+            // Cornering: Use rotationRate along gamma axis
+            const corneringRate = event.rotationRate?.gamma || 0; // Degrees/sec
+            motionState.cornering = corneringRate.toFixed(2);
+            document.getElementById('corneringValue').innerText = motionState.cornering;
+        });
+    } else {
+        alert("DeviceMotion not supported by your browser.");
+    }
+</script>
+
     
 </body>
 
