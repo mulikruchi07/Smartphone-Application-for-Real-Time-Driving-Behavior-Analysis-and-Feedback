@@ -19,202 +19,134 @@
             font-family: 'Arial', sans-serif;
             background-color: #1E2A3A;
             color: #F4F4F8;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .container {
-            padding: 25px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            border: 2px solid #26374D;
-            border-radius: 20px;
-            box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.3);
         }
 
         .title {
-            text-align: center;
+            padding-left: 20px;
+            text-align: left;
             font-size: 22px;
             font-weight: bold;
-            margin-bottom: 30px;
+            margin: 20px 0;
             color: #ffffff;
             text-transform: uppercase;
-        }
-
-        /* Outer Circle (Pie Chart) */
-        .circle1 {
-            width: 180px;
-            height: 180px;
-            background: conic-gradient(#65addd 0% 60%, #26374D 60% 100%);
-            border-radius: 50%;
-            display: inline-block;
-            margin: 0 auto;
-            position: relative;
-            box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
-            box-sizing: border-box;
-        }
-
-        /* Inner Circle (Percentage Display) */
-        .circle2 {
-            width: 120px;
-            height: 120px;
-            background-color: #1E2A3A;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.1);
-        }
-
-        .circle2 p {
-            font-size: 22px;
-            font-weight: bold;
-            color: #F4F4F8;
         }
 
         .stat {
             display: flex;
             justify-content: space-between;
-            margin-top: 30px;
-            gap: 15px;
+            margin: 20px 30px;
+            gap: 40px;
         }
 
         .stat div {
             background-color: #26374D;
-            padding: 45px 10px;
+            padding: 30px 10px;
             border-radius: 12px;
-            text-align: center;
-            flex: 0.4;
-            color: #f9f9f9;
-            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 18px;
-            min-height: 160px;
-        }
-
-        .name {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 25px;
-        }
-
-        .name div {
             text-align: center;
             flex: 1;
-            margin: 0 10px;
-            color: #faf9f7;
-            font-size: 0.9rem;
+            color: #f9f9f9;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            font-size: 14px;
+            min-height: 100px;
         }
 
-        .button-container {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            margin-top: 25px;
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 10px 0;
         }
 
-        .button {
-            padding: 14px;
-            background-color: #26374D;
-            color: #fff;
+        .stat-label {
             font-size: 16px;
-            border: none;
-            border-radius: 12px;
-            cursor: pointer;
-            text-align: center;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            color: #aaa;
         }
 
-        .button:hover {
-            background-color: #3c4a5c;
-        }
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .stat {
+                flex-direction: column;
+                align-items: center;
+                gap: 20px;
+            }
 
-        /* Navbar */
-        .navbar {
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            padding: 15px 0;
-            margin-top: 25px;
-            background-color: transparent;
-        }
-
-        .nav-icon {
-            font-size: 28px;
-            color: #F4F4F8;
-            cursor: pointer;
-            transition: color 0.3s ease-in-out;
-        }
-
-        .nav-icon:hover {
-            color: #65addd;
+            .stat div {
+                font-size: 12px;
+                padding: 20px 10px;
+                min-height: 100px;
+            }
         }
     </style>
 </head>
 
 <body>
-    <div class="container">
-        <div class="title">Dashboard</div>
+    <div class="title">| Dashboard</div>
 
-        <!-- Circle with percentage (Pie Chart) -->
-        <div class="circle1">
-            <div class="circle2">
-                <p>60%</p>
-            </div>
+    <!-- Stat bars -->
+    <div class="stat">
+        <div id="speed">
+            <div class="stat-value" id="speedValue">0</div>
+            <div class="stat-label">Speed (km/h)</div>
         </div>
-
-        <!-- Stat bars -->
-        <div class="stat">
-            <div></div>
-            <div></div>
-            <div></div>
+        <div id="cornering">
+            <div class="stat-value" id="corneringValue">0</div>
+            <div class="stat-label">Cornering (°/s)</div>
         </div>
-
-        <!-- Labels below stats -->
-        <div class="name">
-            <div>
-                <p>SPEED</p>
-            </div>
-            <div>
-                <p>CORNERING</p>
-            </div>
-            <div>
-                <p>BRAKING</p>
-            </div>
-        </div>
-
-        <!-- Buttons Section -->
-        <div class="button-container">
-            <button onclick="leaderboardPage()" class="button">Leaderboard</button>
-            <button onclick="reportPage()" class="button">Reports</button>
-        </div>
-
-        <!-- Navigation Bar -->
-        <div class="navbar">
-            <a href="dashboard.html"><i class="fas fa-tachometer-alt nav-icon"></i></a>
-            <a href="drewards.html"><i class="fas fa-trophy nav-icon"></i></a>
-            <a href="profile.html"><i class="fas fa-user nav-icon"></i></a>
+        <div id="braking">
+            <div class="stat-value" id="brakingValue">0</div>
+            <div class="stat-label">Braking (m/s²)</div>
         </div>
     </div>
 
     <script>
-        function leaderboardPage() {
-            window.location.href = "leaderboard.html";
-        }
-        function reportPage() {
-            window.location.href = "report.html";
-        }
-    </script>
+        // Motion State
+        const motionState = {
+            speed: 0, // Speed (km/h)
+            cornering: 0, // Angular velocity
+            braking: 0 // Acceleration
+        };
 
+        // Geolocation for Speed
+        if ('geolocation' in navigator) {
+            navigator.geolocation.watchPosition(
+                (position) => {
+                    const speed = position.coords.speed || 0; // Speed in m/s
+                    motionState.speed = (speed * 3.6).toFixed(2); // Convert to km/h
+                    document.getElementById('speedValue').innerText = motionState.speed;
+                },
+                (error) => {
+                    console.error("Geolocation error:", error.message);
+                },
+                { enableHighAccuracy: true }
+            );
+        } else {
+            alert("Geolocation not supported by your browser.");
+        }
+
+        // DeviceMotion for Braking and Cornering
+        if (typeof DeviceMotionEvent.requestPermission === 'function') {
+    // For iOS and some Android devices
+    document.body.addEventListener('click', () => {
+        DeviceMotionEvent.requestPermission()
+            .then((permissionState) => {
+                if (permissionState === 'granted') {
+                    console.log('Motion permission granted');
+                    window.addEventListener('devicemotion', handleDeviceMotion);
+                } else {
+                    alert('Motion permission denied');
+                }
+            })
+            .catch(console.error);
+    });
+} else {
+    // For browsers that don't need explicit permission
+    if (window.DeviceMotionEvent) {
+        window.addEventListener('devicemotion', handleDeviceMotion);
+    } else {
+        alert("DeviceMotion not supported by your browser.");
+    }
+}
+
+    </script>
 </body>
 
 </html>
