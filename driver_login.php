@@ -29,7 +29,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             session_start();
 
             // Store driver details in session
-            $_SESSION['driver_id'] = $row['id'];
+            $_SESSION['driver_id'] = $row['driver_id'];
             $_SESSION['driver_name'] = $row['driver_name'];
             $_SESSION['driver_email'] = $row['email'];
             $_SESSION['driver_phone'] = $row['phone'];
