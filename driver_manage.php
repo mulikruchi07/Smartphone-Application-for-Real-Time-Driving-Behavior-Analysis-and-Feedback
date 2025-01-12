@@ -54,8 +54,8 @@ if ($cars_result->num_rows > 0) {
                         <td>" . htmlspecialchars($driver['driver_name']) . "</td>
                         <td>" . htmlspecialchars($driver['phone']) . "</td>
                         <td>
-                            <a href='edit_driver.php?driver_id=" . $driver['id'] . "'>Edit</a> | 
-                            <a href='delete_driver.php?driver_id=" . $driver['id'] . "'>Delete</a>
+                            <a href='edit_driver.php?driver_id=" . $driver['driver_id'] . "'>Edit</a> | 
+                            <a href='delete_driver.php?driver_id=" . $driver['driver_id'] . "'>Delete</a>
                         </td>
                     </tr>";
             }
