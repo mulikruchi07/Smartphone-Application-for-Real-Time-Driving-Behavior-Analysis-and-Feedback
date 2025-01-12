@@ -11,7 +11,7 @@ if ($conn->connect_error) {
 }
 
 $driver_id = $_SESSION['driver_id'];
-$query = "SELECT * FROM driver_details WHERE id = ?";
+$query = "SELECT * FROM driver_details WHERE driver_id = ?";
 $stmt = $conn->prepare($query);
 $stmt->bind_param('i', $driver_id);
 $stmt->execute();
