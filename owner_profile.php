@@ -26,7 +26,6 @@ if ($result->num_rows > 0) {
 $stmt->close();
 $conn->close();
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -35,46 +34,52 @@ $conn->close();
     <title>Owner Profile</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-
+        /* General Styles */
         body {
             margin: 0;
+            padding: 0;
             font-family: 'Poppins', Arial, sans-serif;
-            background-color: #101820;
+            background-color: #1E2A3A;
             color: #EDEDED;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
-            min-height: 100vh;
         }
 
         .container {
-            width: 95%;
-            max-width: 480px;
-            padding: 20px;
-            background: linear-gradient(145deg, #1E1E1E, #2A2A2A);
-            border-radius: 20px;
-            box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.5);
-            text-align: center;
+            width: 100%;
+            max-width: 1200px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+            padding-bottom: 100px;
         }
 
         .title {
+            padding-top: 20px;
+            margin-left: 5px;
             font-size: 26px;
             font-weight: bold;
-            color: #FFA500; 
+            color: #fff;
             text-transform: uppercase;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
+            margin-left: 10px;
         }
 
+        /* Profile Section */
         .stat {
-            background: linear-gradient(135deg, #232323, #333333);
-            padding: 15px;
+            background-color: #283347;
+            padding: 20px;
             border-radius: 15px;
             display: flex;
             align-items: center;
             gap: 15px;
             color: #F9F9F9;
             box-shadow: inset 0px 3px 5px rgba(0, 0, 0, 0.3);
-            margin-bottom: 20px;
+            width: 300px;
+            max-width: 600px;
+            margin-bottom: 30px;
         }
 
         .profile-pic {
@@ -96,39 +101,41 @@ $conn->close();
         }
 
         .info strong {
-            color: #00C1D4; 
+            color: #00C1D4;
         }
 
+        /* Buttons Section */
         .button-container {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+            width: 90%;
+            max-width: 600px;
         }
 
         .button {
             padding: 15px;
-            font-size: 14px;
+            font-size: 16px;
             font-weight: bold;
             border: none;
             border-radius: 15px;
             cursor: pointer;
             text-align: center;
-            background: linear-gradient(135deg, #1F2833, #2C343A);
+            background-color: #26374D;
             color: #fff;
             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
             transition: all 0.3s ease;
-            height: 80px; /* Ensure uniform height for all buttons */
-            width: 50%;
+            width: 300px;
+            height: 50px;
         }
 
         .button i {
-            display: block;
-            font-size: 20px;
-            margin-bottom: 5px;
+            margin-right: 10px;
         }
 
         .button:hover {
-            background: linear-gradient(135deg, #2D3A45, #374953);
+            background-color: #374953;
             transform: scale(1.05);
         }
 
@@ -141,12 +148,12 @@ $conn->close();
             border-radius: 15px;
             cursor: pointer;
             text-align: center;
-            background: linear-gradient(135deg, #FF4500, #FF6347); /* Bright red-orange */
+            background: linear-gradient(135deg, #FF4500, #FF6347);
             color: #fff;
             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-            margin: 20px auto;
-            display: block;
-            width: 60%; /* Centered button with a fixed width */
+            margin-top: 50px;
+            width: 350px;
+            max-width: 600px;
         }
 
         a {
@@ -164,8 +171,10 @@ $conn->close();
             justify-content: space-around;
             align-items: center;
             padding: 15px 0;
-            margin-top: 30px;
-            border-top: 1px solid #333;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-color:#111f30;
         }
 
         .nav-icon {
@@ -181,36 +190,26 @@ $conn->close();
 
         /* Responsive Design */
         @media (max-width: 600px) {
-            .container {
-                max-width: 90%;
-                padding: 15px;
-            }
-
-            .button-container {
-                grid-template-columns: 1fr;
-            }
-
             .profile-pic {
                 height: 70px;
                 width: 70px;
             }
 
+            .stat {
+                width: 250px;
+            }
+
             .info {
-                text-align: center;
                 font-size: 12px;
             }
 
             .button, .out {
-                font-size: 13px;
+                font-size: 14px;
                 padding: 12px;
             }
-
-            .button {
-                height: 70px; /* Adjust for smaller screens */
-            }
-
+            
             .out {
-                width: 80%; /* Slightly wider on smaller screens */
+                width: 250px;
             }
 
             .nav-icon {
@@ -220,8 +219,9 @@ $conn->close();
     </style>
 </head>
 <body>
-    <div class="container">
         <div class="title">Owner Profile</div>
+
+        <div class="container">
 
         <!-- Profile Section -->
         <div class="stat">
@@ -245,13 +245,13 @@ $conn->close();
 
         <!-- Sign Out Button -->
         <a href="Owner_login.html"><button class="out"><i class="fas fa-sign-out-alt"></i>Sign Out</button></a>
+    </div>
 
-        <!-- Navigation Bar -->
-        <div class="navbar">
-            <a href="dashboard.html"><i class="fas fa-tachometer-alt nav-icon"></i></a>
-            <a href="drewards.html"><i class="fas fa-trophy nav-icon"></i></a>
-            <a href="owner_profile.php"><i class="fas fa-user nav-icon"></i></a>
-        </div>
+    <!-- Navigation Bar -->
+    <div class="navbar">
+        <a href="dashboard.html"><i class="fas fa-tachometer-alt nav-icon"></i></a>
+        <a href="drewards.html"><i class="fas fa-trophy nav-icon"></i></a>
+        <a href="owner_profile.html"><i class="fas fa-user nav-icon"></i></a>
     </div>
 </body>
 </html>
