@@ -6,29 +6,61 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body,
-        html {
-            height: 100%;
-            font-family: 'Arial', sans-serif;
+        body{
+            font-family: 'Poppins', Arial, sans-serif;
             background-color: #1E2A3A;
             color: #F4F4F8;
+            margin: 0;
+            padding: 0;
         }
 
         .title {
-            padding-left: 20px;
-            text-align: left;
+            top: 0;
+            padding-top: 20px;
+            padding-left: 5px;
+            font-size: 26px;
+            font-weight: 600;
+            color: #d0a933;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            margin-left: 10px;
+            position: fixed;
+            background-color: #1E2A3A;
+            width: 100%;
+            padding-bottom: 10px;
+        }
+
+        .circle1 {
+            width: 180px;
+            height: 180px;
+            background: conic-gradient(#65addd 0% 60%, #26374D 60% 100%);
+            border-radius: 50%;
+            margin: 20px auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
+            margin-top: 80px;
+        }
+
+        .circle2 {
+            width: 120px;
+            height: 120px;
+            background-color: #1E2A3A;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .circle2 p {
             font-size: 22px;
             font-weight: bold;
-            margin: 20px 0;
-            color: #ffffff;
-            text-transform: uppercase;
+            color: #F4F4F8;
         }
 
         .stat {
@@ -47,32 +79,101 @@
             color: #f9f9f9;
             box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
             font-size: 14px;
-            min-height: 100px;
+            min-height: 270px;
         }
 
-        .stat-value {
-            font-size: 24px;
-            font-weight: bold;
-            margin: 10px 0;
+        .name {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 10px;
         }
 
-        .stat-label {
-            font-size: 16px;
-            color: #aaa;
+        .name div {
+            text-align: center;
+            flex: 1;
+            margin: 0 5px;
+            color: #faf9f7;
+            font-size: 0.8rem;
+        }
+
+        .button-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin: 30px 20px;
+            padding-bottom: 70px;
+        }
+
+        .button {
+            padding: 10px;
+            background-color: #26374D;
+            color: #fff;
+            font-size: 14px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            text-align: center;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .button:hover {
+            background-color: #3c4a5c;
+        }
+
+        .navbar {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 15px 0;
+            background-color: #26374D;
+            box-shadow: 0px -2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-icon {
+            font-size: 22px;
+            color: #F4F4F8;
+            cursor: pointer;
+            transition: color 0.3s ease-in-out;
+        }
+
+        .nav-icon:hover {
+            color: #65addd;
         }
 
         /* Responsive Design */
         @media (max-width: 768px) {
+            .circle1 {
+                width: 140px !important;
+                height: 140px !important;
+            }
+
+            .circle2 {
+                width: 80px;
+                height: 80px;
+            }
+
             .stat {
-                flex-direction: column;
-                align-items: center;
+                flex-direction: row;
+                justify-content: space-between;
                 gap: 20px;
             }
 
             .stat div {
                 font-size: 12px;
                 padding: 20px 10px;
-                min-height: 100px;
+                min-height: 200px;
+            }
+
+            .name div {
+                font-size: 0.8rem;
+            }
+
+            .button-container {
+                width: 90%;
+                margin: 15px auto;
             }
         }
     </style>
@@ -81,86 +182,49 @@
 <body>
     <div class="title">| Dashboard</div>
 
-    <!-- Stat bars -->
-    <div class="stat">
-        <div id="speed">
-            <div class="stat-value" id="speedValue">0</div>
-            <div class="stat-label">Speed (km/h)</div>
-        </div>
-        <div id="cornering">
-            <div class="stat-value" id="corneringValue">0</div>
-            <div class="stat-label">Cornering (°/s)</div>
-        </div>
-        <div id="braking">
-            <div class="stat-value" id="brakingValue">0</div>
-            <div class="stat-label">Braking (m/s²)</div>
+    <div class="circle1">
+        <div class="circle2">
+            <p id="speedText">0%</p>
         </div>
     </div>
 
+    <div class="stat">
+        <div id="speedBox">Speed: 0%</div>
+        <div id="corneringBox">Cornering: 0%</div>
+        <div id="brakingBox">Braking: 0%</div>
+    </div>
+
+    <div class="name">
+        <div>
+            <p>SPEED</p>
+        </div>
+        <div>
+            <p>CORNERING</p>
+        </div>
+        <div>
+            <p>BRAKING</p>
+        </div>
+    </div>
+
+    <div class="button-container">
+        <button onclick="leaderboardPage()" class="button">Leaderboard</button>
+        <button onclick="reportPage()" class="button">Reports</button>
+    </div>
+
+    <div class="navbar">
+        <a href="dashboard.html"><i class="fas fa-tachometer-alt nav-icon"></i></a>
+        <a href="drewards.html"><i class="fas fa-trophy nav-icon"></i></a>
+        <a href="owner_profile.html"><i class="fas fa-user nav-icon"></i></a>
+    </div>
+
     <script>
-    const motionState = {
-        speed: 0, // Speed (km/h)
-        cornering: 0, // Angular velocity (degrees/sec)
-        braking: 0, // Acceleration (m/s²)
-    };
-
-    // Parameters for smoothing and thresholds
-    let brakingHistory = []; // Stores recent braking values
-    const BRAKING_THRESHOLD = 1.0; // Minimum acceleration to detect braking
-    const SMOOTHING_WINDOW = 5; // Number of values for moving average
-
-    // Geolocation for Speed
-    if ('geolocation' in navigator) {
-        navigator.geolocation.watchPosition(
-            (position) => {
-                const speed = position.coords.speed || 0; // Speed in m/s
-                motionState.speed = (speed * 3.6).toFixed(2); // Convert to km/h
-                document.getElementById('speedValue').innerText = motionState.speed;
-            },
-            (error) => {
-                console.error("Geolocation error:", error.message);
-            },
-            { enableHighAccuracy: true }
-        );
-    } else {
-        alert("Geolocation not supported by your browser.");
-    }
-
-    // DeviceMotion for Braking and Cornering
-    if (window.DeviceMotionEvent) {
-        window.addEventListener('devicemotion', (event) => {
-            // Braking: Calculate deceleration along z-axis
-            let brakingForce = Math.abs(event.accelerationIncludingGravity?.z || 0); // Absolute value
-
-            // Apply threshold to filter out small fluctuations
-            if (brakingForce > BRAKING_THRESHOLD) {
-                brakingHistory.push(brakingForce);
-
-                // Keep only the last N values for smoothing
-                if (brakingHistory.length > SMOOTHING_WINDOW) {
-                    brakingHistory.shift();
-                }
-
-                // Calculate moving average
-                const averageBraking = (
-                    brakingHistory.reduce((sum, value) => sum + value, 0) / brakingHistory.length
-                ).toFixed(2);
-
-                motionState.braking = averageBraking;
-                document.getElementById('brakingValue').innerText = motionState.braking;
-            }
-
-            // Cornering: Use rotationRate along gamma axis
-            const corneringRate = event.rotationRate?.gamma || 0; // Degrees/sec
-            motionState.cornering = corneringRate.toFixed(2);
-            document.getElementById('corneringValue').innerText = motionState.cornering;
-        });
-    } else {
-        alert("DeviceMotion not supported by your browser.");
-    }
-</script>
-
-    
+        function leaderboardPage() {
+            window.location.href = "leaderboard.html";
+        }
+        function reportPage() {
+            window.location.href = "report.html";
+        }
+    </script>
 </body>
 
 </html>
