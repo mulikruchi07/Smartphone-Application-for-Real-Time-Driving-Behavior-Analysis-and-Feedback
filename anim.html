@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Animated Card</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* Global styles to ensure it scales on any device */
+        body, html {
+            font-family: 'Cinzel', serif;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #1e2a3a;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Card styling */
+        .card {
+            width: 90vw;
+            max-width: 350px;
+            height: 50vh;
+            background: #1e2a3a;
+            position: relative;
+            display: grid;
+            place-content: center;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: all 0.5s ease-in-out;
+            animation: cardLoad 1s ease-in-out forwards;
+        }
+
+        #logo-main, #logo-second {
+            height: 100%;
+            object-fit: contain;
+        }
+
+        #logo-main {
+            fill: #d0a933;
+        }
+
+        #logo-second {
+            padding-bottom: 10px;
+            fill: none;
+            stroke: #d0a933;
+            stroke-width: 1px;
+        }
+
+        .bottom-text {
+            font-family: 'Cinzel', serif; /* Font applied here */
+            position: absolute;
+            left: 50%;
+            bottom: 13px;
+            transform: translateX(-50%);
+            font-size: 8px;
+            text-transform: uppercase;
+            padding: 0px 5px 0px 8px;
+            color: #d0a933;
+            background: #1e2a3a;
+            opacity: 0;
+            letter-spacing: 7px;
+            animation: bottomTextLoad 1s ease-in-out 1s forwards;
+        }
+
+        .content {
+            transition: all 0.5s ease-in-out;
+        }
+
+        .content .logo {
+            height: 45px;
+            position: relative;
+            width: 43px;
+            overflow: hidden;
+            animation: logoLoad 2s ease-in-out 0.5s forwards;
+        }
+
+        .content .logo .logo1 {
+            height: 45px;
+            width: 60px;
+            position: absolute;
+            left: 0;
+        }
+
+        .content .logo .logo2 {
+            height: 43px;
+            position: absolute;
+            left: 33px;
+        }
+
+        .content .logo .trail {
+            position: absolute;
+            right: 0;
+            height: 100%;
+            width: 100%;
+            opacity: 0;
+        }
+
+        .content .logo-bottom-text {
+            font-family: 'Cinzel', serif; /* Font applied here */
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            margin-top: 30px;
+            color: #d0a933;
+            padding-left: 8px;
+            font-size: 10px;
+            opacity: 0;
+            letter-spacing: none;
+            animation: logoBottomTextLoad 1s ease-in-out 1.5s forwards;
+        }
+
+        @keyframes cardLoad {
+            0% {
+                transform: scale(1);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1.1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes logoLoad {
+            0% {
+                width: 43px;
+            }
+            100% {
+                width: 134px;
+            }
+        }
+
+        @keyframes bottomTextLoad {
+            0% {
+                opacity: 0;
+                letter-spacing: 7px;
+            }
+            100% {
+                opacity: 1;
+                letter-spacing: 3px;
+            }
+        }
+
+        @keyframes logoBottomTextLoad {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        @keyframes trail {
+            0% {
+                background: linear-gradient(90deg, rgba(189, 159, 103, 0) 90%, rgb(208, 169, 51)100%);
+                opacity: 0;
+            }
+
+            30% {
+                background: linear-gradient(90deg, rgba(189, 159, 103, 0) 70%, rgb(208,169,51) 100%);
+                opacity: 1;
+            }
+
+            70% {
+                background: linear-gradient(90deg, rgba(189, 159, 103, 0) 70%, rgb(208,169,51) 100%);
+                opacity: 1;
+            }
+
+            95% {
+                background: linear-gradient(90deg, rgba(189, 159, 103, 0) 90%, rgb(208,169,51) 100%);
+                opacity: 0;
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .card {
+                width: 80vw;
+                height: 60vh;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .card {
+                width: 90vw;
+                height: 65vh;
+            }
+
+            .bottom-text {
+                font-size: 10px;
+                letter-spacing: 5px;
+            }
+
+            .content .logo-bottom-text {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="border"></div>
+        <div class="content">
+            <div class="logo">
+                <div class="logo1">
+                    <img src="tlogo.jpg" alt="logo1" id="logo-main">
+                </div>
+                <div class="logo2">
+                    <img src="tlogo2.jpg" alt="logo2" id="logo-second">
+                </div>
+                <span class="trail"></span>
+            </div>
+            <span class="logo-bottom-text"><br><br> WELCOME !!</span>
+        </div>
+        <span class="bottom-text">~ saviours  </span>
+    </div>
+
+    <script>
+        // Redirect to another page after the animation ends
+        setTimeout(() => {
+            window.location.href = "index.html"; // Replace with your target page URL
+        }, 6000); // Adjust time to match animation duration (6 seconds in this case)
+    </script>
+</body>
+</html>

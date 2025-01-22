@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weekly Report</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #1E2A3A;
+            color: #F4F4F8;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        h2 {
+            text-align: left;
+        }
+
+        section {
+            margin-bottom: 20px;
+        }
+
+        .charts {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .chart-container {
+            width: 300px;
+            height: 300px;
+            background-color: #293849;
+            border-radius: 10px;
+            padding: 10px;
+        }
+
+        .chart-container canvas {
+            width: 100%;
+            height: 100%;
+        }
+
+        .interaction {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .interaction button {
+            padding: 10px 20px;
+            background-color: #F4F4F8;
+            color: #1E2A3A;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        @media screen and (max-width: 600px) {
+            .charts {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .chart-container {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Weekly Driving Report</h1>
+
+    <section id="executive-summary">
+        <h2>Executive Summary</h2>
+        <p>This weekly report summarizes key metrics for driving behavior, including speed, cornering, and braking. The analysis highlights trends and provides actionable insights to improve driving safety and efficiency.</p>
+    </section>
+
+    <section id="introduction">
+        <h2>Introduction</h2>
+        <p>The purpose of this report is to monitor and evaluate driving behavior over the past week. Using advanced analytics, we aim to identify patterns in driving habits and areas for improvement.</p>
+    </section>
+
+    <div class="charts">
+        <div class="chart-container">
+            <canvas id="speedChart"></canvas>
+        </div>
+        <div class="chart-container">
+            <canvas id="corneringChart"></canvas>
+        </div>
+        <div class="chart-container">
+            <canvas id="brakeChart"></canvas>
+        </div>
+    </div>
+
+    <section id="conclusion">
+        <h2>Conclusion</h2>
+        <p>The report concludes that consistent monitoring and feedback can significantly enhance driving habits. The findings highlight the importance of maintaining optimal speed, smooth cornering, and controlled braking to ensure safety and efficiency.</p>
+    </section>
+
+    <div class="interaction">
+        <button onclick="downloadPDF()">Download PDF</button>
+    </div>
+    
+    <script>
+        const createSpeedChart = () => {
+            const ctx = document.getElementById('speedChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+                    datasets: [{
+                        label: 'Speed (km/h)',
+                        data: [60, 80, 70, 90],
+                        borderColor: '#36A2EB',
+                        fill: false,
+                    }]
+                },
+                options: {
+                    responsive: true
+                }
+            });
+        };
+
+        const createCorneringChart = () => {
+            const ctx = document.getElementById('corneringChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+                    datasets: [{
+                        label: 'Cornering G-Force',
+                        data: [0.8, 1.2, 0.9, 1.1],
+                        backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0'],
+                    }]
+                },
+                options: {
+                    responsive: true
+                }
+            });
+        };
+
+        const createBrakeChart = () => {
+            const ctx = document.getElementById('brakeChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+                    datasets: [{
+                        label: 'Brake Pressure (psi)',
+                        data: [30, 50, 45, 60],
+                        borderColor: '#FF6384',
+                        fill: false,
+                    }]
+                },
+                options: {
+                    responsive: true
+                }
+            });
+        };
+
+        const downloadPDF = () => {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF('p', 'mm', 'a4');
+
+           
+            // Page 1: Executive Summary & Introduction
+            doc.setFontSize(18);
+            doc.text('Weekly Report', 20, 20);
+            doc.setFontSize(12);
+            doc.text('Executive Summary:', 20, 40);
+            doc.text('This weekly report summarizes key metrics for driving behavior, including speed, cornering, and braking.', 20, 50);
+            doc.text('Introduction:', 20, 70);
+            doc.text('The purpose of this report is to monitor and evaluate driving behavior over the past week.', 20, 80);
+
+            doc.addPage();
+
+            // Page 2: Speed and Cornering Charts
+            const speedChartCanvas = document.getElementById('speedChart');
+            const corneringChartCanvas = document.getElementById('corneringChart');
+            doc.addImage(speedChartCanvas, 'PNG', 20, 40, 160, 100);
+            doc.addImage(corneringChartCanvas, 'PNG', 20, 150, 160, 100);
+
+            doc.addPage();
+
+            // Page 3: Brake Chart & Conclusion
+            const brakeChartCanvas = document.getElementById('brakeChart');
+            doc.addImage(brakeChartCanvas, 'PNG', 20, 40, 160, 100);
+            doc.text('Conclusion:', 20, 160);
+            doc.text('Consistent monitoring and feedback enhance driving habits and safety.', 20, 170);
+
+            doc.save('weekly_report.pdf');
+        };
+
+        window.onload = () => {
+            createSpeedChart();
+            createCorneringChart();
+            createBrakeChart();
+        };
+    </script>
+</body>
+
+</html>

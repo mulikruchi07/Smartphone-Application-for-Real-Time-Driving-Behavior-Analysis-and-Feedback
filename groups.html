@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Groups</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Roboto:wght@300;400;500&display=swap"rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body,
+        html {
+            height: 100%;
+            font-family: 'Poppins', sans-serif;
+            background-color: #1E2A3A;
+            color: #F4F4F8;
+            padding: 0 5px;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 60px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: #26374D;
+            width: calc(100% - 40px);
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
+            z-index: 10;
+            padding: 0 20px;
+        }
+
+        .back {
+            font-size: 24px;
+            color: #F4F4F8;
+            text-decoration: none;
+            position: absolute;
+            left: 15px;
+            transition: transform 0.2s;
+        }
+
+        .back:hover {
+            transform: scale(1.1);
+        }
+
+        .title {
+            font-size: 18px;
+            text-transform: uppercase;
+            text-align: center;
+            width: 100%;
+        }
+
+        .group-list {
+            font-size: 16px;
+            margin-top: 80px;
+        }
+
+        .no-groups-message {
+            font-size: 16px;
+            color: #F4F4F8;
+            text-align: left;
+            margin-top: 20px;
+        }
+
+        .group-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between; /* Ensures proper spacing between elements */
+            padding: 12px;
+            margin-bottom: 15px;
+            background: #65addd;
+            border-radius: 12px;
+            color: #F4F4F8;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+
+        .group-item .group-image {
+            flex-shrink: 0; /* Prevents image from shrinking */
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            margin-right: 20px;
+            object-fit: cover;
+        }
+
+        .group-item span {
+    flex-grow: 1; /* Allows the name to take up remaining space */
+    font-size: 16px;
+    text-align: left;
+    line-height: 1.2;
+}
+
+        .group-actions {
+            position: absolute;
+            top: 50%;
+            right: 10px;
+            display: none;
+            transform: translateY(-50%);
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .group-item:hover .group-actions {
+            display: flex;
+        }
+
+        .no-groups-message {
+            display: none;
+        }
+
+        .dropdown {
+            position: absolute;
+            top: 140%;
+            right: 20px;
+            display: none;
+            background-color: #3C4A5C;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            transform: translateY(-50%);
+            z-index: 1;
+        }
+
+        .dropdown a {
+            color: #F4F4F8;
+            padding: 8px 12px;
+            text-decoration: none;
+            display: block;
+            border-radius: 8px;
+            transition: background-color 0.3s ease;
+        }
+
+        .dropdown a:hover {
+            background-color: #4E5D6E;
+        }
+
+        .group-item:hover .dropdown {
+            display: flex;
+        }
+
+        .floating-button-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .floating-button {
+            background-color: #4A90E2;
+            color: #F4F4F8;
+            border: none;
+            border-radius: 12px;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.2s, background-color 0.2s;
+        }
+
+        .floating-button:hover {
+            transform: scale(1.1);
+            background-color: #357ABD;
+        }
+
+        .form-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 20;
+        }
+
+        .form-box {
+            background-color: #26374D;
+            padding: 20px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 320px;
+            text-align: center;
+            box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .form-box h3 {
+            color: #F4F4F8;
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
+
+        .form-box input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #4A90E2;
+            border-radius: 10px;
+            background-color: #1E2A3A;
+            color: #F4F4F8;
+        }
+
+        .form-box input::placeholder {
+            color: #F4F4F8;
+            opacity: 0.7;
+        }
+
+        .form-button,
+        .form-cancel {
+            width: 120px;
+            padding: 10px;
+            margin: 5px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .form-button {
+            background-color: #4A90E2;
+            color: #F4F4F8;
+        }
+
+        .form-button:hover {
+            background-color: #357ABD;
+        }
+
+        .form-cancel {
+            background-color: #F44336;
+            color: #F4F4F8;
+        }
+
+        .form-cancel:hover {
+            background-color: #D32F2F;
+        }
+
+        .form-message {
+            margin-top: 10px;
+            font-size: 14px;
+            color: red;
+        }
+
+        .popup-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 30;
+        }
+
+        .popup-box {
+            background-color: #26374D;
+            padding: 20px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 320px;
+            text-align: center;
+            box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .popup-box p {
+            color: #F4F4F8;
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+
+        .popup-button {
+            width: 100px;
+            padding: 10px;
+            margin: 5px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .popup-button:hover {
+            transform: scale(1.1);
+        }
+
+        #confirm-delete {
+            background-color: #4A90E2;
+            color: #F4F4F8;
+        }
+
+        #confirm-delete:hover {
+            background-color: #357ABD;
+        }
+
+        .popup-button:last-child {
+            background-color: #F44336;
+            color: #F4F4F8;
+        }
+
+        .popup-button:last-child:hover {
+            background-color: #D32F2F;
+        }
+
+
+        /* Responsiveness for smaller screens */
+        @media (max-width: 600px) {
+            .header {
+                width: 100%;
+            }
+
+            .floating-button-container {
+                bottom: 10px;
+                right: 10px;
+                flex-direction: row;
+                gap: 5px;
+            }
+
+            .group-item {
+        flex-direction: row; /* Ensures horizontal layout */
+        align-items: center;
+        justify-content: flex-start; /* Aligns items to the left */
+    }
+
+    .group-item .group-image {
+        width: 60px; /* Smaller image for mobile */
+        height: 60px;
+        margin-right: 10px;
+    }
+
+    .group-item span {
+        font-size: 14px; /* Adjust font size for smaller screens */
+    }
+
+    .group-actions {
+        position: static; /* Makes actions inline */
+        flex-direction: row;
+        margin-top: 10px;
+    }
+
+            .dropdown {
+                right: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="leaderboard.html" class="back">
+                <i class="fas fa-arrow-left"></i>
+            </a>
+            <div class="title">Groups</div>
+        </div>
+
+        <div class="group-list" id="group-list">
+            <div class="no-groups-message" id="no-groups-message">No groups available yet</div>
+        </div>
+
+        <div class="floating-button-container">
+            <button class="floating-button join-group" onclick="showForm('Join Group')">Join</button>
+            <button class="floating-button create-group" onclick="showForm('Create Group')">Create</button>
+        </div>
+
+        <div class="form-container" id="form-container">
+            <div class="form-box">
+                <h3 id="form-title">Form Title</h3>
+                <input type="text" id="group-name" placeholder="Enter Group Name">
+                <input type="file" id="group-image" accept="image/*">
+                <button class="form-button" onclick="submitForm()">OK</button>
+                <button class="form-cancel" onclick="hideForm()">Cancel</button>
+                <div class="form-message" id="form-message"></div>
+            </div>
+        </div>
+
+        <div class="popup-container" id="popup-container">
+            <div class="popup-box">
+                <p id="popup-message">Are you sure you want to delete this group?</p>
+                <button id="confirm-delete" class="popup-button">Yes</button>
+                <button onclick="hideDeletePopup()" class="popup-button">No</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const groups = {};
+
+        function updateNoGroupsMessage() {
+            const noGroupsMessage = document.getElementById('no-groups-message');
+            if (noGroupsMessage) {
+                noGroupsMessage.style.display = Object.keys(groups).length === 0 ? 'block' : 'none';
+            }
+        }
+
+        function showForm(action, groupName = '') {
+    const formContainer = document.getElementById('form-container');
+    const formTitle = document.getElementById('form-title');
+    const groupNameInput = document.getElementById('group-name');
+    const groupImage = document.getElementById('group-image');
+    const formMessage = document.getElementById('form-message');
+
+    formMessage.textContent = '';
+    formTitle.textContent = action;
+    formContainer.style.display = 'flex';
+    groupNameInput.value = groupName;
+
+    if (action === 'Edit Group') {
+        groupNameInput.dataset.originalGroupName = groupName; // Save the original group name
+    } else {
+        delete groupNameInput.dataset.originalGroupName;
+    }
+
+    groupImage.style.display = action === 'Create Group' || action === 'Edit Group' ? 'block' : 'none';
+}
+
+
+        function hideForm() {
+            const formContainer = document.getElementById('form-container');
+            document.getElementById('group-name').value = '';
+            document.getElementById('group-image').value = '';
+            document.getElementById('form-message').textContent = '';
+            formContainer.style.display = 'none';
+        }
+
+        function submitForm() {
+    const action = document.getElementById('form-title').textContent;
+    const groupName = document.getElementById('group-name').value.trim();
+    const groupImage = document.getElementById('group-image').files[0];
+    const formMessage = document.getElementById('form-message');
+
+    if (!groupName) {
+        formMessage.textContent = 'Please enter a group name.';
+        return;
+    }
+
+    if (action === 'Create Group') {
+        if (groups[groupName]) {
+            formMessage.textContent = 'Group name already exists.';
+            return;
+        }
+
+        groups[groupName] = { image: null };
+
+        const reader = new FileReader();
+        reader.onload = function () {
+            groups[groupName].image = reader.result || null;
+            addGroupToUI(groupName, groups[groupName].image);
+            hideForm();
+        };
+
+        if (groupImage) {
+            reader.readAsDataURL(groupImage);
+        } else {
+            addGroupToUI(groupName, null);
+            hideForm();
+        }
+    } else if (action === 'Edit Group') {
+        const originalGroupName = document.getElementById('group-name').dataset.originalGroupName || groupName;
+
+        if (groupName !== originalGroupName && groups[groupName]) {
+            formMessage.textContent = 'Group name already exists.';
+            return;
+        }
+
+        if (groupName !== originalGroupName) {
+            groups[groupName] = { ...groups[originalGroupName] };
+            delete groups[originalGroupName];
+        }
+
+        const reader = new FileReader();
+        reader.onload = function () {
+            groups[groupName].image = reader.result || groups[groupName].image;
+            refreshGroupUI();
+            hideForm();
+        };
+
+        if (groupImage) {
+            reader.readAsDataURL(groupImage);
+        } else {
+            refreshGroupUI();
+            hideForm();
+        }
+    } else if (action === 'Join Group') {
+        if (!groups[groupName]) {
+            formMessage.textContent = 'No such group exists.';
+            return;
+        }
+
+        formMessage.textContent = `You have successfully joined the group: ${groupName}`;
+        setTimeout(hideForm, 700); // Hide form after 2 seconds
+    }
+}
+
+        function addGroupToUI(groupName, groupImage) {
+            const groupList = document.getElementById('group-list');
+            const groupItem = document.createElement('div');
+            groupItem.className = 'group-item';
+            groupItem.innerHTML = `
+                <img src="${groupImage || 'https://via.placeholder.com/50'}" alt="${groupName}" class="group-image">
+                <span>${groupName}</span>
+                <div class="group-actions">
+                    <button onclick="editGroup('${groupName}')">Edit</button>
+                    <button onclick="showDeletePopup('${groupName}')">Delete</button>
+                </div>
+            `;
+            groupList.appendChild(groupItem);
+            updateNoGroupsMessage();
+        }
+
+        function refreshGroupUI() {
+            const groupList = document.getElementById('group-list');
+            groupList.innerHTML = '';
+            for (let name in groups) {
+                addGroupToUI(name, groups[name].image);
+            }
+            updateNoGroupsMessage();
+        }
+
+        function editGroup(groupName) {
+            showForm('Edit Group', groupName);
+        }
+
+        function showDeletePopup(groupName) {
+            const popupContainer = document.getElementById('popup-container');
+            const popupMessage = document.getElementById('popup-message');
+            popupMessage.textContent = `Are you sure you want to delete '${groupName}'?`;
+
+            const confirmButton = document.getElementById('confirm-delete');
+            confirmButton.onclick = () => deleteGroup(groupName);
+
+            popupContainer.style.display = 'flex';
+        }
+
+        function hideDeletePopup() {
+            const popupContainer = document.getElementById('popup-container');
+            popupContainer.style.display = 'none';
+        }
+
+        function deleteGroup(groupName) {
+    const noGroupsMessage = document.getElementById('no-groups-message');
+
+    if (groups[groupName]) {
+        delete groups[groupName];
+        refreshGroupUI();
+    }
+
+    if (noGroupsMessage) {
+        noGroupsMessage.style.display = Object.keys(groups).length === 0 ? 'block' : 'none';
+    }
+
+    hideDeletePopup();
+}
+
+    </script>
+</body>
+
+</html>
