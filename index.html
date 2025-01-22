@@ -4,68 +4,70 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
     <style>
         /* General body styling */
-body {
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-    background-color: #1e1e2e;
-    color: #fff;
-    margin: 0;
-    padding: 0;
-}
+        body {
+            font-family: 'Cinzel', serif;
+            background-color: #1e2a3a;
+            color: #fff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
-/* Flex container for centering the two boxes */
-.container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    min-height: 100vh; /* Full screen height */
-}
+        /* Flex container for centering the two boxes */
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            min-height: 100vh; /* Full screen height */
+        }
 
-/* Style for each box (button) */
-.choice-box {
-    background-color: #2c3546;
-    border: 1px solid #1e1e2e;
-    border-radius: 15px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-    color: white;
-    font-size: 20px;
-    font-weight: bold;
-    text-align: center;
-    padding: 20px;
-    width: 90%; /* Responsive width */
-    max-width: 300px;
-    margin: 15px 0; /* Spacing between boxes */
-    cursor: pointer;
-    transition: transform 0.2s ease, background-color 0.3s ease;
-}
-a {
-    text-decoration: none;
-    color: #fff;
-}
+        /* Style for each box (button) */
+        .choice-box {
+            font-family: 'Cinzel', serif; /* Ensures font for buttons */
+            background-color: #26374D;
+            border: 1px solid #1e1e2e;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            color: white;
+            font-size: 20px;
+            font-weight: 1000; /* Medium weight for better visibility */
+            text-align: center;
+            padding: 20px;
+            width: 90%; /* Responsive width */
+            max-width: 300px;
+            margin: 15px 0; /* Spacing between boxes */
+            cursor: pointer;
+            transition: transform 0.2s ease, background-color 0.3s ease;
+            width: 400px;
+            align-items: center;
+        }
 
-/* Hover effect */
-.choice-box:hover {
-    background-color: #4CAF50;
-    transform: scale(1.05); /* Slight scaling on hover */
-}
+        /* Style for links */
+        a {
+            font-family: 'Cinzel', serif; /* Ensures font for links */
+            text-decoration: none;
+            color: #fff;
+        }
 
-/* Responsive Media Query for smaller screens */
-@media (max-width: 600px) {
-    .choice-box {
-        max-width: 80%; /* Adjust width for smaller devices */
-    }
-}
-
+        /* Hover effect */
+        .choice-box:hover {
+            background-color: #d0a933;
+            transform: scale(1.05); /* Slight scaling on hover */
+        }
     </style>
 </head>
 <body>
-<div class="container">
-    <!-- Owner Button -->
-    <div class="choice-box"><a href="Owner_login.html">Owner</a></div>
-    <!-- Driver Button -->
-    <div class="choice-box"><a href = "Driver_login.html">Driver</a></div>
-</div>
+    <div class="container">
+        <!-- Owner Button -->
+        <a href="Owner_login.html"><button class="choice-box">Owner</button></a>
+        <!-- Driver Button -->
+        <a href="Driver_login.html"><button class="choice-box">Driver</button></a>
+    </div>
 </body>
 </html>
