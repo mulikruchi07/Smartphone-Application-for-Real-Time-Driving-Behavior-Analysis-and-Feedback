@@ -4,11 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Driver Registration</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
-        /* General body styling */
+/* General body styling */
 body {
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-    background-color: #1e1e2e;
+    font-family: 'Poppins', Arial, sans-serif;
+    background-color: #1e2a3a;
     color: #fff;
     margin: 0;
     padding: 0;
@@ -16,11 +17,11 @@ body {
 
 /* Container */
 .container {
-    max-width: 500px;
+    max-width: 320px;
     margin: 40px auto;
     padding: 20px;
-    background-color: #222936;
-    border: 1px solid #1e1e2e;
+    background-color: #26374D;
+    border: 1px solid #1e2a3a;
     border-radius: 15px;
     box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
 }
@@ -28,7 +29,7 @@ body {
 /* Heading */
 h1 {
     text-align: center;
-    color: #4CAF50;
+    color: #d0a933;
     margin-bottom: 20px;
 }
 
@@ -53,7 +54,7 @@ input[type="text"], input[type="email"], input[type="tel"], input[type="password
 
 input[type="text"]:focus, input[type="email"]:focus, 
 input[type="tel"]:focus, input[type="password"]:focus {
-    border-color: #4CAF50;
+    border-color: #e3b93c;
 }
 
 /* File Upload Wrapper */
@@ -87,7 +88,7 @@ button[type="submit"] {
     margin-left: 25%;
     width: 50%;
     padding: 10px;
-    background-color: #4CAF50;
+    background-color: #d0a933;
     color: #fff;
     border: none;
     border-radius: 8px;
@@ -97,7 +98,7 @@ button[type="submit"] {
 }
 
 button[type="submit"]:hover {
-    background-color: #3e8e41;
+    background-color: #af8d28;
 }
 
 /* Already have account */
@@ -108,48 +109,79 @@ button[type="submit"]:hover {
 
 a {
     text-decoration: none;
-    color: #4CAF50;
+    color: #e3b93c;
 }
 
 a:hover {
-    color: #3e8e41;
+    color: #d0a933;
 }
 
-    </style>
+/* Media query for larger screens (laptops/desktops) */
+@media (min-width: 768px) {
+    .container {
+        max-width: 400px; /* Slightly larger width for bigger screens */
+        margin: 60px auto;
+    }
+
+    input[type="text"], input[type="email"], input[type="tel"], input[type="password"] {
+        width: 95%; /* Stretch inputs for wider layout */
+    }
+
+    button[type="submit"] {
+        margin-left: 25%;
+        width: 50%; /* Center button for larger screens */
+    }
+}
+
+/* Media query for ultra-wide screens */
+@media (min-width: 1200px) {
+    .container {
+        max-width: 500px; /* Larger width for very wide screens */
+    }
+}
+</style>
 </head>
 <body>
     <div class="container">
-        <h1>Driver Registration</h1>
+        <h1>Registration</h1>
         <form action="driver_register.php" method="post" enctype="multipart/form-data">
+            <!-- Drive Name -->
             <label for="owner-name">Driver Name</label>
-            <input type="text" id="owner-name" name="driver_name" placeholder="Enter your name">
-        
+            <input type="text" id="owner-name" placeholder="Enter your name">
+
+            <!-- Email -->
             <label for="email">Email ID</label>
-            <input type="email" id="email" name="email" placeholder="Enter your email">
-        
+            <input type="email" id="email" placeholder="Enter your email">
+
+            <!-- Phone Number -->
             <label for="phone">Phone Number</label>
-            <input type="tel" id="phone" name="phone" placeholder="Enter your phone number">
-        
+            <input type="tel" id="phone" placeholder="Enter your phone number">
+
+            <!-- Password -->
             <label for="password">Password</label>
-            <input type="password" id="password" name="password" placeholder="Create a password">
-        
+            <input type="password" id="password" placeholder="Create a password">
+
+            <!-- Owner Photo -->
             <label for="driver-photo">Driver Photo</label>
             <div class="file-upload-wrapper">
-            <label class="custom-file-label" for="owner-photo">Choose File</label>
-            <input type="file" id="driver-photo" name="driver_photo">
+                <label class="custom-file-label" for="owner-photo">Choose File</label>
+                <input type="file" id="owner-photo">
             </div>
-        
+
+            <!-- License Photo -->
             <label for="license-photo">License Photo</label>
             <div class="file-upload-wrapper">
-            <label class="custom-file-label" for="license-photo">Choose File</label>
-            <input type="file" id="license-photo" name="license_photo">
+                <label class="custom-file-label" for="license-photo">Choose File</label>
+                <input type="file" id="license-photo">
             </div>
-        
-            <label for="car_registration_number">Car Registration Number</label>
-            <input type="text" id="car_registration_number" name="car_registration_number" placeholder="Enter car registration number">
-        
+
+            <!-- Car Registration Number -->
+            <label for="car-reg">Car Registration Number</label>
+            <input type="text" id="car-reg" placeholder="Enter car registration number">
+
+            <!-- Submit Button -->
             <button type="submit">Register</button>
-        </form>        
+        </form>
 
         <!-- Already have an account -->
         <p class="already-account">Already have an account? <a href="Driver_login.html">Click here</a></p>
