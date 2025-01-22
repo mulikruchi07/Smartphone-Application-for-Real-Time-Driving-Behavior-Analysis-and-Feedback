@@ -4,11 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Driver Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
-        /* General body styling */
+    /* General body styling */
 body {
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-    background-color: #1e1e2e;
+    font-family: 'Poppins', Arial, sans-serif;
+    background-color: #1e2a3a;
     color: #fff;
     margin: 0;
     padding: 0;
@@ -16,11 +17,11 @@ body {
 
 /* Container */
 .container {
-    max-width: 500px;
+    max-width: 320px;
     margin: 150px auto;
     padding: 20px;
-    background-color: #222936;
-    border: 1px solid #1e1e2e;
+    background-color: #26374D;
+    border: 1px solid #1e2a3a;
     border-radius: 15px;
     box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
 }
@@ -28,7 +29,7 @@ body {
 /* Heading */
 h1 {
     text-align: center;
-    color: #4CAF50;
+    color: #d0a933;
     margin-bottom: 20px;
 }
 
@@ -52,7 +53,7 @@ input[type="email"], input[type="password"] {
 }
 
 input[type="email"]:focus, input[type="password"]:focus {
-    border-color: #4CAF50;
+    border-color: #e3b93c;
 }
 
 /* Submit button */
@@ -61,7 +62,7 @@ button[type="submit"] {
     margin-left: 25%;
     width: 50%;
     padding: 10px;
-    background-color: #4CAF50;
+    background-color: #d0a933;
     color: #fff;
     border: none;
     border-radius: 8px;
@@ -71,7 +72,7 @@ button[type="submit"] {
 }
 
 button[type="submit"]:hover {
-    background-color: #3e8e41;
+    background-color: #af8d28;
 }
 
 /* Already have account */
@@ -82,17 +83,41 @@ button[type="submit"]:hover {
 
 a {
     text-decoration: none;
-    color: #4CAF50;
+    color: #e3b93c;
 }
 
 a:hover {
-    color: #3e8e41;
+    color: #d0a933;
+}
+
+/* Media query for larger screens (laptops/desktops) */
+@media (min-width: 768px) {
+    .container {
+        max-width: 300px; /* Slightly larger width for bigger screens */
+        margin: 150px auto;
+    }
+    
+    button[type="submit"] {
+        margin-left: 25%;
+        width: 50%; /* Center button for larger screens */
+    }
+
+    input[type="email"], input[type="password"] {
+        width: 95%; /* Stretch inputs for wider layout */
+    }
+}
+
+/* Media query for ultra-wide screens */
+@media (min-width: 1200px) {
+    .container {
+        max-width: 500px; /* Larger width for very wide screens */
+    }
 }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Driver Login</h1>
+        <h1>Login</h1>
         <form action="driver_login.php" method="post">
             <label for="email">Email</label>
             <input type="email" id="email" name="email" placeholder="Enter your email" required><br>
