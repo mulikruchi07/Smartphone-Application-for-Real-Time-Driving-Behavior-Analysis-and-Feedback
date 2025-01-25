@@ -6,8 +6,8 @@
     <title>Driver Registration</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
-/* General body styling */
-body {
+        /* General body styling */
+        body {
     font-family: 'Poppins', Arial, sans-serif;
     background-color: #1e2a3a;
     color: #fff;
@@ -139,49 +139,41 @@ a:hover {
         max-width: 500px; /* Larger width for very wide screens */
     }
 }
-</style>
+    </style>
 </head>
 <body>
     <div class="container">
-        <h1>Registration</h1>
+        <h1>Driver Registration</h1>
         <form action="driver_register.php" method="post" enctype="multipart/form-data">
-            <!-- Drive Name -->
             <label for="owner-name">Driver Name</label>
-            <input type="text" id="owner-name" placeholder="Enter your name">
-
-            <!-- Email -->
+            <input type="text" id="owner-name" name="driver_name" placeholder="Enter your name">
+        
             <label for="email">Email ID</label>
-            <input type="email" id="email" placeholder="Enter your email">
-
-            <!-- Phone Number -->
+            <input type="email" id="email" name="email" placeholder="Enter your email">
+        
             <label for="phone">Phone Number</label>
-            <input type="tel" id="phone" placeholder="Enter your phone number">
-
-            <!-- Password -->
+            <input type="tel" id="phone" name="phone" placeholder="Enter your phone number">
+        
             <label for="password">Password</label>
-            <input type="password" id="password" placeholder="Create a password">
-
-            <!-- Owner Photo -->
+            <input type="password" id="password" name="password" placeholder="Create a password">
+        
             <label for="driver-photo">Driver Photo</label>
             <div class="file-upload-wrapper">
-                <label class="custom-file-label" for="owner-photo">Choose File</label>
-                <input type="file" id="owner-photo">
+            <label class="custom-file-label" for="owner-photo">Choose File</label>
+            <input type="file" id="driver-photo" name="driver_photo">
             </div>
-
-            <!-- License Photo -->
+        
             <label for="license-photo">License Photo</label>
             <div class="file-upload-wrapper">
-                <label class="custom-file-label" for="license-photo">Choose File</label>
-                <input type="file" id="license-photo">
+            <label class="custom-file-label" for="license-photo">Choose File</label>
+            <input type="file" id="license-photo" name="license_photo">
             </div>
-
-            <!-- Car Registration Number -->
-            <label for="car-reg">Car Registration Number</label>
-            <input type="text" id="car-reg" placeholder="Enter car registration number">
-
-            <!-- Submit Button -->
+        
+            <label for="car_registration_number">Car Registration Number</label>
+            <input type="text" id="car_registration_number" name="car_registration_number" placeholder="Enter car registration number">
+        
             <button type="submit">Register</button>
-        </form>
+        </form>        
 
         <!-- Already have an account -->
         <p class="already-account">Already have an account? <a href="Driver_login.html">Click here</a></p>
