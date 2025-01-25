@@ -32,46 +32,59 @@ if ($result->num_rows > 0) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Driver Profile</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
+        /* General Styles */
         body {
             margin: 0;
+            padding: 0;
             font-family: 'Poppins', Arial, sans-serif;
-            background-color: #101820;
+            background-color: #1E2A3A;
             color: #EDEDED;
             display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
+            flex-direction: column;
         }
 
         .container {
-            width: 95%;
-            max-width: 480px;
-            padding: 20px;
-            background: linear-gradient(145deg, #1E1E1E, #2A2A2A);
-            border-radius: 20px;
-            box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.5);
-            text-align: center;
+            width: 100%;
+            max-width: 1400px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+            padding-bottom: 100px;
         }
 
         .title {
+            padding-top: 20px;
+            padding-left: 5px;
             font-size: 26px;
-            font-weight: bold;
-            color: #FFA500; 
+            font-weight: 600;
+            color: #d0a933;
             text-transform: uppercase;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
+            margin-left: 10px;
+            position: fixed;
+            background-color: #1E2A3A;
+            width: 100%;
+            padding-bottom: 10px;
         }
 
+        /* Profile Section */
         .stat {
-            background: linear-gradient(135deg, #232323, #333333);
-            padding: 15px;
+            background-color: #283347;
+            padding: 20px;
             border-radius: 15px;
             display: flex;
             align-items: center;
             gap: 15px;
             color: #F9F9F9;
             box-shadow: inset 0px 3px 5px rgba(0, 0, 0, 0.3);
-            margin-bottom: 20px;
+            width: 300px;
+            max-width: 600px;
+            margin-bottom: 30px;
+            margin-top: 80px;
+
         }
 
         .profile-pic {
@@ -86,6 +99,7 @@ if ($result->num_rows > 0) {
             text-align: left;
             font-size: 14px;
             line-height: 1.6;
+            font-family: 'Poppins', Arial, sans-serif;
         }
 
         .info p {
@@ -93,39 +107,42 @@ if ($result->num_rows > 0) {
         }
 
         .info strong {
-            color: #00C1D4; 
+            color: #d0a933;
         }
 
+        /* Buttons Section */
         .button-container {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+            width: 90%;
+            max-width: 600px;
         }
 
         .button {
             padding: 15px;
-            font-size: 14px;
-            font-weight: bold;
+            font-size: 16px;
+            font-weight: 600;
             border: none;
             border-radius: 15px;
             cursor: pointer;
             text-align: center;
-            background: linear-gradient(135deg, #1F2833, #2C343A);
+            background-color: #26374D;
             color: #fff;
             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
             transition: all 0.3s ease;
-            height: 80px; /* Ensure uniform height for all buttons */
-            width: 50%;
+            width: 400px;
+            height: 50px;
+            font-family: 'Poppins', Arial, sans-serif;
         }
 
         .button i {
-            display: block;
-            font-size: 20px;
-            margin-bottom: 5px;
+            margin-right: 10px;
         }
 
         .button:hover {
-            background: linear-gradient(135deg, #2D3A45, #374953);
+            background-color: #1b3554;
             transform: scale(1.05);
         }
 
@@ -133,17 +150,18 @@ if ($result->num_rows > 0) {
         .out {
             padding: 15px;
             font-size: 16px;
-            font-weight: bold;
+            font-weight: 600;
             border: none;
             border-radius: 15px;
             cursor: pointer;
             text-align: center;
-            background: linear-gradient(135deg, #FF4500, #FF6347); /* Bright red-orange */
+            background: linear-gradient(135deg, #FF4500, #FF6347);
             color: #fff;
             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-            margin: 20px auto;
-            display: block;
-            width: 60%; /* Centered button with a fixed width */
+            margin-top: 50px;
+            width: 350px;
+            max-width: 600px;
+            font-family: 'Poppins', Arial, sans-serif;
         }
 
         a {
@@ -161,8 +179,12 @@ if ($result->num_rows > 0) {
             justify-content: space-around;
             align-items: center;
             padding: 15px 0;
-            margin-top: 30px;
-            border-top: 1px solid #333;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-color: #26374D;
+            box-shadow: 0px -2px 5px rgba(0, 0, 0, 0.3);
+            font-family: 'Poppins', Arial, sans-serif;
         }
 
         .nav-icon {
@@ -173,41 +195,62 @@ if ($result->num_rows > 0) {
         }
 
         .nav-icon:hover {
-            color: #00C1D4;
+            color: #d0a933;
         }
 
         /* Responsive Design */
-        @media (max-width: 600px) {
-            .container {
-                max-width: 90%;
-                padding: 15px;
-            }
 
-            .button-container {
-                grid-template-columns: 1fr;
-            }
-
+        @media (max-width: 400px) {
             .profile-pic {
                 height: 70px;
                 width: 70px;
             }
 
+            .stat {
+                width: 275px;
+            }
+
             .info {
-                text-align: center;
                 font-size: 12px;
             }
 
             .button, .out {
-                font-size: 13px;
+                font-size: 14px;
                 padding: 12px;
+                width: 325px;
             }
-
-            .button {
-                height: 70px; /* Adjust for smaller screens */
-            }
-
+            
             .out {
-                width: 80%; /* Slightly wider on smaller screens */
+                width: 250px;
+            }
+
+            .nav-icon {
+                font-size: 24px;
+            }
+        }
+
+        @media (max-width: 350px) {
+            .profile-pic {
+                height: 70px;
+                width: 70px;
+            }
+
+            .stat {
+                width: 250px;
+            }
+
+            .info {
+                font-size: 12px;
+            }
+
+            .button, .out {
+                font-size: 14px;
+                padding: 12px;
+                width: 275px;
+            }
+            
+            .out {
+                width: 250px;
             }
 
             .nav-icon {
@@ -217,8 +260,9 @@ if ($result->num_rows > 0) {
     </style>
 </head>
 <body>
-<div class="container">
-    <div class="title">Driver Profile</div>
+<div class="title">Driver Profile</div>
+
+        <div class="container">
     <div class="stat">
         <img src="<?php echo htmlspecialchars($driver['driver_photo'] ?: 'placeholder.jpg'); ?>" class="profile-pic" alt="Driver Picture">
         <div class="info">
