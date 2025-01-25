@@ -16,11 +16,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $car_model = isset($_POST['car-model']) ? $conn->real_escape_string($_POST['car-model']) : '';
     $car_registration_number = isset($_POST['car_registration_number']) ? $conn->real_escape_string($_POST['car_registration_number']) : '';
 
-    // Check if any required fields are empty
-    if (empty($owner_name) || empty($email) || empty($phone) || empty($password) || empty($car_model) || empty($car_registration_number) || empty($_FILES['car-photo']['name']) || empty($_FILES['owner-photo']['name']) || empty($_FILES['license-photo']['name'])) {
-        echo "<script>alert('All fields are required.');</script>";
-        exit();
-    }
+    // // Check if any required fields are empty
+    // if (empty($owner_name) || empty($email) || empty($phone) || empty($password) || empty($car_model) || empty($car_registration_number) || empty($_FILES['car-photo']['name']) || empty($_FILES['owner-photo']['name']) || empty($_FILES['license-photo']['name'])) {
+    //     echo "<script>alert('All fields are required.');</script>";
+    //     exit();
+    // }
 
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         echo "<script>alert('Invalid email format.');</script>";
