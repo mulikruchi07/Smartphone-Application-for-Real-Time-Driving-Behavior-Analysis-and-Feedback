@@ -33,6 +33,7 @@ $conn->close();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Owner Profile</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         /* General Styles */
         body {
@@ -43,12 +44,11 @@ $conn->close();
             color: #EDEDED;
             display: flex;
             flex-direction: column;
-            align-items: center;
         }
 
         .container {
             width: 100%;
-            max-width: 1200px;
+            max-width: 1400px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -58,13 +58,17 @@ $conn->close();
 
         .title {
             padding-top: 20px;
-            margin-left: 5px;
+            padding-left: 5px;
             font-size: 26px;
-            font-weight: bold;
-            color: #fff;
+            font-weight: 600;
+            color: #d0a933;
             text-transform: uppercase;
             margin-bottom: 20px;
             margin-left: 10px;
+            position: fixed;
+            background-color: #1E2A3A;
+            width: 100%;
+            padding-bottom: 10px;
         }
 
         /* Profile Section */
@@ -80,6 +84,8 @@ $conn->close();
             width: 300px;
             max-width: 600px;
             margin-bottom: 30px;
+            margin-top: 80px;
+
         }
 
         .profile-pic {
@@ -94,6 +100,7 @@ $conn->close();
             text-align: left;
             font-size: 14px;
             line-height: 1.6;
+            font-family: 'Poppins', Arial, sans-serif;
         }
 
         .info p {
@@ -101,7 +108,7 @@ $conn->close();
         }
 
         .info strong {
-            color: #00C1D4;
+            color: #d0a933;
         }
 
         /* Buttons Section */
@@ -117,7 +124,7 @@ $conn->close();
         .button {
             padding: 15px;
             font-size: 16px;
-            font-weight: bold;
+            font-weight: 600;
             border: none;
             border-radius: 15px;
             cursor: pointer;
@@ -126,8 +133,9 @@ $conn->close();
             color: #fff;
             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
             transition: all 0.3s ease;
-            width: 300px;
+            width: 400px;
             height: 50px;
+            font-family: 'Poppins', Arial, sans-serif;
         }
 
         .button i {
@@ -135,7 +143,7 @@ $conn->close();
         }
 
         .button:hover {
-            background-color: #374953;
+            background-color: #1b3554;
             transform: scale(1.05);
         }
 
@@ -143,7 +151,7 @@ $conn->close();
         .out {
             padding: 15px;
             font-size: 16px;
-            font-weight: bold;
+            font-weight: 600;
             border: none;
             border-radius: 15px;
             cursor: pointer;
@@ -154,6 +162,7 @@ $conn->close();
             margin-top: 50px;
             width: 350px;
             max-width: 600px;
+            font-family: 'Poppins', Arial, sans-serif;
         }
 
         a {
@@ -174,7 +183,9 @@ $conn->close();
             position: fixed;
             bottom: 0;
             width: 100%;
-            background-color:#111f30;
+            background-color: #26374D;
+            box-shadow: 0px -2px 5px rgba(0, 0, 0, 0.3);
+            font-family: 'Poppins', Arial, sans-serif;
         }
 
         .nav-icon {
@@ -185,11 +196,41 @@ $conn->close();
         }
 
         .nav-icon:hover {
-            color: #00C1D4;
+            color: #d0a933;
         }
 
         /* Responsive Design */
-        @media (max-width: 600px) {
+
+        @media (max-width: 400px) {
+            .profile-pic {
+                height: 70px;
+                width: 70px;
+            }
+
+            .stat {
+                width: 275px;
+            }
+
+            .info {
+                font-size: 12px;
+            }
+
+            .button, .out {
+                font-size: 14px;
+                padding: 12px;
+                width: 325px;
+            }
+            
+            .out {
+                width: 250px;
+            }
+
+            .nav-icon {
+                font-size: 24px;
+            }
+        }
+
+        @media (max-width: 350px) {
             .profile-pic {
                 height: 70px;
                 width: 70px;
@@ -206,6 +247,7 @@ $conn->close();
             .button, .out {
                 font-size: 14px;
                 padding: 12px;
+                width: 275px;
             }
             
             .out {
@@ -251,7 +293,7 @@ $conn->close();
     <div class="navbar">
         <a href="dashboard.html"><i class="fas fa-tachometer-alt nav-icon"></i></a>
         <a href="drewards.html"><i class="fas fa-trophy nav-icon"></i></a>
-        <a href="owner_profile.html"><i class="fas fa-user nav-icon"></i></a>
+        <a href="owner_profile.php"><i class="fas fa-user nav-icon"></i></a>
     </div>
 </body>
 </html>
