@@ -5,37 +5,217 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link async rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link async href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <script defer src="theme.js"></script>
+    <script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC8BRcQmeeF80IUuxrjUxXiqDwc9K6PixI&libraries=places,marker,routes&callback=initMap"
+        async defer></script>
     <style>
-        body{
+        body {
             font-family: 'Poppins', Arial, sans-serif;
             background-color: #1E2A3A;
             color: #F4F4F8;
             margin: 0;
             padding: 0;
+            overflow-x: hidden;
         }
 
         .title {
             top: 0;
-            padding-top: 20px;
-            padding-left: 5px;
+            padding: 20px 5px 10px;
             font-size: 26px;
             font-weight: 600;
             color: #d0a933;
             text-transform: uppercase;
-            margin-bottom: 20px;
             margin-left: 10px;
             position: fixed;
             background-color: #1E2A3A;
             width: 100%;
-            padding-bottom: 10px;
+            z-index: 101;
+        }
+
+        .map-title {
+            margin-top: 50px;
+            font-size: 26px;
+            font-weight: 600;
+            color: #d0a933;
+            text-transform: uppercase;
+            width: 100%;
+            text-align: left;
+            padding: 10px;
+        }
+
+        .search-container {
+            margin-top: 10px;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            align-items: center;
+            position: relative;
+        }
+
+        #searchBox {
+            width: 70%;
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 15px;
+            border: 1px solid #d0a933;
+            outline: none;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            background: #ffffff;
+            color: #1E2A3A;
+        }
+
+        .clear-btn {
+            position: absolute;
+            right: 22%;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #d0a933;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        #startBtn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            cursor: pointer;
+            background: #F0E68C;
+            /* Light yellow */
+            color: #1E2A3A;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+            transition: background 0.3s ease;
+        }
+
+        #startBtn:disabled {
+            background: #555;
+            cursor: not-allowed;
+            color: #aaa;
+        }
+
+
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(135deg, #26374D, #1E2A3A);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+            z-index: 200;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            box-sizing: border-box;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .popup-content {
+            text-align: center;
+            color: #F4F4F8;
+            font-size: 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        #carNumber {
+            padding: 10px;
+            border: none;
+            border-radius: 10px;
+            outline: none;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+            font-size: 16px;
+            width: calc(100% - 20px);
+            margin: 10px auto;
+            text-align: center;
+            background: #F4F4F8;
+            color: #1E2A3A;
+        }
+
+        .popup-btns {
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .popup-btns button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s ease;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+            flex: 1;
+            margin: 5px;
+        }
+
+        .popup-btns button:first-child {
+            background: #d0a933;
+            color: #1E2A3A;
+        }
+
+        .popup-btns button:first-child:hover {
+            background: #c29a2c;
+        }
+
+        .popup-btns button:last-child {
+            background: #26374D;
+            color: #F4F4F8;
+        }
+
+        .popup-btns button:last-child:hover {
+            background: #1E2A3A;
+        }
+
+        @media (max-width: 768px) {
+            .popup {
+                width: 95%;
+                padding: 20px;
+            }
+
+            #carNumber {
+                font-size: 14px;
+                width: calc(100% - 20px);
+            }
+
+            .popup-btns button {
+                font-size: 14px;
+                padding: 8px 15px;
+            }
+        }
+
+        #map-container {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        #map {
+            height: 400px;
+            width: 96%;
+            margin: 20px 2%;
+            border-radius: 14px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
         }
 
         .circle1 {
             width: 180px;
             height: 180px;
-            background: conic-gradient(#65addd 0% 60%, #26374D 60% 100%);
+            background: #26374D;
             border-radius: 50%;
             margin: 20px auto;
             display: flex;
@@ -143,6 +323,19 @@
             color: #65addd;
         }
 
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
         /* Responsive Design */
         @media (max-width: 768px) {
             .circle1 {
@@ -176,15 +369,60 @@
                 margin: 15px auto;
             }
         }
+
+
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            to {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+        }
+
+        /* Light Theme Styles */
+        body.light-theme {
+            background-color: #fff;
+            color: #000;
+        }
+
+        body.light-theme .title {
+            color: #2575fc;
+            background-color: #fff;
+        }
+
+        body.light-theme .circle1 {
+            background: #AECCE4;
+        }
+
+        body.light-theme .circle2 {
+            background-color: #fff;
+        }
+
+        body.light-theme .circle2 p {
+            color: #000;
+        }
+
+        body.light-theme .stat div {
+            background-color: #AECCE4;
+            color: #000;
+        }
+
+        body.light-theme .name div {
+            color: #000;
+        }
     </style>
 </head>
 
 <body>
     <div class="title">| Dashboard</div>
 
-    <div class="circle1">
+    <div class="circle1" id="scoreBox">
         <div class="circle2">
-            <p id="speedText">0%</p>
+            <p id="speedText"></p>
         </div>
     </div>
 
@@ -205,7 +443,27 @@
             <p>BRAKING</p>
         </div>
     </div>
+    <div class="map-title">| Tracking</div>
+    <div class="search-container">
+        <input id="searchBox" type="text" placeholder="Search location...">
+        <button id="clearButton" onclick="clearSearch()" class="clear-btn">✖</button>
+        <button id="startBtn" class="button" disabled onclick="openPopup()">Start</button>
+    </div>
+    <div id="map-container">
+        <div id="map"></div>
+    </div>
 
+    <div id="popup" class="popup">
+        <div class="popup-content">
+            <h3>Confirm Trip</h3>
+            <p id="routeInfo"></p>
+            <input type="text" id="carNumber" placeholder="Enter Car Number">
+            <div class="popup-btns">
+                <button onclick="closePopup(true)">Let's Goo!</button>
+                <button onclick="closePopup(false)">Cancel</button>
+            </div>
+        </div>
+    </div>
     <div class="button-container">
         <button onclick="leaderboardPage()" class="button">Leaderboard</button>
         <button onclick="reportPage()" class="button">Reports</button>
@@ -214,15 +472,179 @@
     <div class="navbar">
         <a href="dashboard.html"><i class="fas fa-tachometer-alt nav-icon"></i></a>
         <a href="drewards.html"><i class="fas fa-trophy nav-icon"></i></a>
-        <a href="owner_profile.html"><i class="fas fa-user nav-icon"></i></a>
+        <a href="#" id="profileLink" onmouseover="setProfileLink()">
+            <i class="fas fa-user nav-icon"></i>
+        </a>
     </div>
-
     <script>
         function leaderboardPage() {
             window.location.href = "leaderboard.html";
         }
         function reportPage() {
             window.location.href = "report.html";
+        }
+    </script>
+
+    <script>
+        let map;
+        let ownerMarker;
+        let directionsService;
+        let directionsRenderer;
+        let destinationMarker;
+        let routeDisplayed = false; // Track if a route is currently displayed
+
+        function initMap() {
+            map = new google.maps.Map(document.getElementById("map"), {
+                center: {
+                    lat: 19.04557,
+                    lng: 72.889045
+                }, // Default center
+                zoom: 16,
+            });
+
+            directionsService = new google.maps.DirectionsService();
+            directionsRenderer = new google.maps.DirectionsRenderer({
+                map: map
+            });
+
+            //  Set the owner's location when the map initializes.  Replace with your coordinates.
+            setOwnerLocation(19.04557, 72.889045); // Example: Mumbai coordinates
+
+            const searchBox = document.getElementById('searchBox');
+            const autocomplete = new google.maps.places.Autocomplete(searchBox);
+
+            autocomplete.bindTo('bounds', map);
+            autocomplete.setFields(['geometry', 'name']);
+
+            autocomplete.addListener('place_changed', () => {
+                const place = autocomplete.getPlace();
+                if (!place.geometry) {
+                    console.log("Returned place contains no geometry");
+                    return;
+                }
+
+                // If the place has a geometry, then present it on a map.
+                if (place.geometry.viewport) {
+                    map.fitBounds(place.geometry.viewport);
+                } else {
+                    map.setCenter(place.geometry.location);
+                    map.setZoom(17);
+                }
+
+                // Set destination marker
+                setDestination(place.geometry.location.lat(), place.geometry.location.lng());
+                // Enable the 'Start' button once a destination is selected
+                document.getElementById('startBtn').disabled = false;
+                calculateAndDisplayRoute();
+            });
+        }
+
+        function setOwnerLocation(lat, lng) {
+            const ownerLocation = {
+                lat: lat,
+                lng: lng
+            };
+
+            // Create or update the owner marker
+            if (!ownerMarker) {
+                ownerMarker = new google.maps.Marker({
+                    position: ownerLocation, // Corrected: Use ownerLocation directly
+                    map: map,
+                    title: "Owner Location",
+                    icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png",
+                });
+            } else {
+                ownerMarker.setPosition(ownerLocation);
+            }
+
+            map.setCenter(ownerLocation); // Center the map on the owner's location
+        }
+
+        function setDestination(lat, lng) {
+            const destinationLocation = {
+                lat: lat,
+                lng: lng
+            };
+
+            // Create or update the destination marker
+            if (!destinationMarker) {
+                destinationMarker = new google.maps.Marker({
+                    position: destinationLocation,
+                    map: map,
+                    title: "Destination",
+                    icon: "http://maps.google.com/mapfiles/ms/icons/red-dot.png",
+                });
+            } else {
+                destinationMarker.setPosition(destinationLocation);
+            }
+        }
+
+        function calculateAndDisplayRoute() {
+            if (!ownerMarker || !destinationMarker) {
+                console.log("Owner or destination marker not set.");
+                return;
+            }
+
+            const origin = ownerMarker.getPosition();
+            const destination = destinationMarker.getPosition();
+
+            directionsService.route({
+                    origin: origin,
+                    destination: destination,
+                    travelMode: google.maps.TravelMode.DRIVING,
+                },
+                (response, status) => {
+                    if (status === 'OK') {
+                        directionsRenderer.setDirections(response);
+                        routeDisplayed = true; // Set routeDisplayed to true when route is displayed
+                    } else {
+                        window.alert('Directions request failed due to ' + status);
+                        routeDisplayed = false;
+                    }
+                });
+        }
+        window.initMap = initMap;
+
+        function clearSearch() {
+            document.getElementById('searchBox').value = '';
+            document.getElementById('startBtn').disabled = true;
+
+            // Clear destination marker and route
+            if (destinationMarker) {
+                destinationMarker.setMap(null);
+                destinationMarker = null;
+            }
+
+            directionsRenderer.setDirections({
+                routes: []
+            }); // Clear the route from the map
+            routeDisplayed = false; // Reset routeDisplayed to false
+
+        }
+
+        function openPopup() {
+            const origin = ownerMarker.getPosition();
+            if (!destinationMarker) {
+                alert("Please select a destination first!");
+                return;
+            }
+
+            const destination = destinationMarker.getPosition();
+            document.getElementById('routeInfo').innerText = `Source: ${origin}\nDestination: ${destination}`;
+            document.getElementById('popup').style.display = 'block';
+        }
+
+        function closePopup(confirm) {
+            document.getElementById('popup').style.display = 'none';
+            if (confirm) {
+                alert('Trip Confirmed!');
+            } else {
+                alert('Trip Cancelled!');
+            }
+        }
+
+        function setProfileLink() {
+            document.getElementById('profileLink').href = 'profile.html?t=' + new Date().getTime();
         }
     </script>
 </body>

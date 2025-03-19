@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Settings</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        /* General Styles */
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background-color: #1E2A3A;
+            color: #F4F4F8;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            /* min-height: 100vh; */
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            /* gap: 20px; */
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .title {
+            text-align: center;
+            font-size: 28px;
+            font-weight: 600;
+            color: #ffffff;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            margin: 0;
+        }
+
+        .back-arrow {
+            position: absolute;
+            left: 0;
+            text-decoration: none;
+            color: #d0a933;
+            font-size: 24px;
+            transition: transform 0.2s;
+        }
+
+        .back-arrow:hover {
+            transform: scale(1.1);
+        }
+
+        .profile-photo {
+            width: 120px;
+            height: 120px;
+            border-radius: 15px;
+            overflow: hidden;
+            cursor: pointer;
+            border: 1px solid #ffffff;
+            margin-bottom: 30px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .profile-photo:hover {
+            transform: scale(1.05);
+            box-shadow: 0px 4px 15px rgba(210, 169, 51, 0.4);
+        }
+
+        .profile-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .settings-section {
+            background-color: none;
+            position: relative;
+            /* padding: 25px; */
+            border-radius: 20px;
+            /* box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3); */
+            width: 100%;
+            height: 25px;
+            /* margin-bottom: 20px; */
+            /* transition: transform 0.3s ease, box-shadow 0.3s ease; */
+        }
+
+        .settings-section:hover {
+            transform: translateY(-5px);
+            /* box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.4); */
+        }
+
+        .button {
+            width: 100%;
+            padding: 15px;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            /* Ensures proper spacing */
+            background-color: #26374D;
+            color: #fff;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .button span {
+            flex-grow: 1;
+            text-align: center;
+        }
+
+        .right-icon {
+            margin-left: auto;
+            /* Pushes icon to the right */
+        }
+
+        .red-button {
+            background-color: #d9534f;
+        }
+
+        .red-button:hover {
+            background-color: #c9302c;
+        }
+
+        .popup {
+            display: none;
+            background-color: #1E2A3A;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.4);
+            position: absolute;
+            /* Keeps it within the section */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            /* Adjust width dynamically */
+            /* max-width: 400px; */
+            height: auto;
+            /* Adjust height dynamically */
+            padding: 15px;
+            box-sizing: border-box;
+            z-index: 1000;
+        }
+
+        .popup h2 {
+            color: #d0a933;
+            font-size: 22px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .popup.show {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .popup .close {
+            color: #d0a933;
+            font-size: 24px;
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .popup .close:hover {
+            transform: scale(1.1);
+        }
+
+        .popup form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .popup input {
+            margin-bottom: 15px;
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid #555;
+            background-color: #f0f0f0;
+            color: #1E2A3A;
+            font-size: 14px;
+            transition: box-shadow 0.3s ease;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .popup input:focus {
+            outline: none;
+            box-shadow: 0px 0px 8px rgba(210, 169, 51, 0.6);
+        }
+
+        .popup .error {
+            color: #d9534f;
+            font-size: 14px;
+            margin-top: -10px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .popup .password-container {
+            position: relative;
+            width: 100%;
+        }
+
+        .popup .password-container input {
+            width: 100%;
+            padding-right: 40px;
+        }
+
+        .popup .password-container .toggle-password {
+            position: absolute;
+            top: 50%;
+            right: 12px;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #555;
+            transition: color 0.3s ease;
+        }
+
+        .popup .password-container .toggle-password:hover {
+            color: #d0a933;
+        }
+
+        select {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .popup button {
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            background-color: #26374D;
+            color: #fff;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .popup button:hover {
+            background-color: #1b3554;
+            transform: scale(1.02);
+        }
+
+        .options-popup {
+            text-align: center;
+        }
+
+        .options-popup button {
+            margin: 10px 0;
+            padding: 12px 20px;
+            width: 80%;
+        }
+
+        .zoomed-photo {
+            width: 100%;
+            border-radius: 15px;
+            max-height: 300px;
+            object-fit: cover;
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: translate(-50%, -60%);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translate(-50%, -50%);
+            }
+        }
+
+        /* Media Queries for Phone Screens */
+        @media (max-width: 480px) {
+            .title {
+                font-size: 24px;
+            }
+
+            .profile-photo {
+                width: 100px;
+                height: 100px;
+            }
+
+            .settings-section {
+                padding: 20px;
+            }
+
+            .button {
+                padding: 12px;
+                font-size: 14px;
+            }
+
+            .popup {
+                max-width: 95%;
+                padding: 12px;
+            }
+
+            .popup h2 {
+                font-size: 20px;
+            }
+
+            .container {
+                width: 100%;
+                padding: 0 10px;
+                /* Adjust padding to fill the page properly */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <i class="fas fa-arrow-left back-arrow" onclick="window.location.href='driver_profile.php';"></i>
+        <div class="title">Account Settings</div>
+    </div>
+    <div class="profile-photo" id="profilePhoto">
+        <img src="" alt="Profile Photo" id="profileImage">
+    </div>
+    <div class="popup" id="profileOptionsPopup">
+        <span class="close" id="closeProfileOptions">&times;</span>
+        <div class="options-popup">
+            <button id="viewPhotoBtn">View Photo</button>
+            <button id="updatePhotoBtn">Update Photo</button>
+        </div>
+    </div>
+
+    <div class="popup" id="photoViewPopup">
+        <span class="close" id="closePhotoView">&times;</span>
+        <img src="" alt="Zoomed Photo" class="zoomed-photo" id="zoomedPhoto">
+    </div>
+
+    <div class="popup" id="updatePhotoPopup">
+        <span class="close" id="closeUpdatePhoto">&times;</span>
+        <h2>Update Photo</h2>
+        <form id="updatePhotoForm">
+            <input type="file" name="newPhoto" id="newPhoto" accept="image/*" required>
+            <button type="submit">Save Changes</button>
+        </form>
+    </div>
+
+    <div class="container">
+        <div class="settings-section">
+            <button class="button" id="updatePhoneBtn"><i class="fas fa-phone"></i>
+                <span>Update Phone</span>
+                <i class="fas fa-chevron-right right-icon"></i></button>
+        </div>
+        <div class="settings-section">
+            <button class="button" id="updatePasswordBtn"><i class="fas fa-lock"></i>
+                <span>Update Password</span>
+                <i class="fas fa-chevron-right right-icon"></i></button>
+        </div>
+        <div class="settings-section">
+            <button class="button" id="notificationBtn"><i class="fas fa-bell"></i>
+                <span>Manage Notification</span>
+                <i class="fas fa-chevron-right right-icon"></i>
+                <select>
+                    <option value="on">On</option>
+                    <option value="off">Off</option>
+                </select>
+            </button>
+        </div>
+        <div class="settings-section">
+            <button class="button" id="notificationBtn">
+                <i class="fas fa-question-circle"></i>
+                <span>
+                    <select>
+                        <option value="en">English</option>
+                        <option value="es">Hindi</option>
+                        <option value="fr">Marathi</option>
+                    </select>
+                    Language</span>
+                <i class="fas fa-chevron-right right-icon"></i>
+
+        </div>
+        <div class="settings-section">
+            <button class="button" id="helpSupportBtn">
+                <i class="fas fa-question-circle"></i>
+                <span>Help & Support</span>
+                <i class="fas fa-chevron-right right-icon"></i>
+            </button>
+        </div>
+
+        <div class="settings-section">
+            <button class="button" id="privacyPolicyBtn">
+                <i class="fas fa-user-shield"></i>
+                <span>Privacy Policy</span>
+                <i class="fas fa-chevron-right right-icon"></i>
+            </button>
+        </div>
+        <div class="settings-section">
+            <button class="button red-button" id="deleteAccountBtn"><i class="fas fa-trash-alt"></i>
+                <span>Delete Account</span>
+                <i class="fas fa-chevron-right right-icon"></i></button>
+        </div>
+    </div>
+
+    <div class="popup" id="updatePhonePopup">
+        <span class="close" id="closePhonePopup">&times;</span>
+        <h2>Update Phone</h2>
+        <form id="updatePhoneForm">
+            <input type="text" name="phone" id="phoneInput" placeholder="Enter New Phone" required>
+            <button type="submit">Confirm Update</button>
+        </form>
+    </div>
+
+    <div class="popup" id="updatePasswordPopup">
+        <span class="close" id="closePasswordPopup">&times;</span>
+        <h2>Update Password</h2>
+        <form id="updatePasswordForm">
+            <div class="password-container">
+                <input type="password" name="current_password" id="currentPassword" placeholder="Current Password" required>
+                <i class="fas fa-eye toggle-password" onclick="togglePassword('currentPassword')"></i>
+            </div>
+            <div class="password-container">
+                <input type="password" name="new_password" id="newPassword" placeholder="New Password" required>
+                <i class="fas fa-eye toggle-password" onclick="togglePassword('newPassword')"></i>
+            </div>
+            <div class="password-container">
+                <input type="password" name="confirm_password" id="confirmPassword" placeholder="Confirm New Password" required>
+                <i class="fas fa-eye toggle-password" onclick="togglePassword('confirmPassword')"></i>
+            </div>
+            <button type="submit">Save Changes</button>
+        </form>
+    </div>
+
+    <div class="popup" id="deleteConfirmationPopup">
+        <span class="close" id="closeDeletePopup">&times;</span>
+        <h2>Are you sure you want to delete your account?</h2>
+        <button class="red-button" id="confirmDeleteBtn">Yes, Delete</button>
+        <button id="cancelDeleteBtn">Cancel</button>
+    </div>
+
+    <script>
+        // JavaScript for handling popups and interactions
+        const profilePhoto = document.getElementById('profilePhoto');
+        const profileOptionsPopup = document.getElementById('profileOptionsPopup');
+        const closeProfileOptions = document.getElementById('closeProfileOptions');
+        const viewPhotoBtn = document.getElementById('viewPhotoBtn');
+        const updatePhotoBtn = document.getElementById('updatePhotoBtn');
+        const photoViewPopup = document.getElementById('photoViewPopup');
+        const closePhotoView = document.getElementById('closePhotoView');
+        const updatePhotoPopup = document.getElementById('updatePhotoPopup');
+        const closeUpdatePhoto = document.getElementById('closeUpdatePhoto');
+        const deleteAccountBtn = document.getElementById('deleteAccountBtn');
+        const deleteConfirmationPopup = document.getElementById('deleteConfirmationPopup');
+        const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+        const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
+        const updatePhoneBtn = document.getElementById('updatePhoneBtn');
+        const updatePhonePopup = document.getElementById('updatePhonePopup');
+        const closePhonePopup = document.getElementById('closePhonePopup');
+        const updatePasswordBtn = document.getElementById('updatePasswordBtn');
+        const updatePasswordPopup = document.getElementById('updatePasswordPopup');
+        const closePasswordPopup = document.getElementById('closePasswordPopup');
+
+        const popups = document.querySelectorAll('.popup');
+
+        // Function to close all popups
+        function closeAllPopups() {
+            popups.forEach(popup => popup.style.display = 'none');
+        }
+
+        // Open and close popups
+        profilePhoto.addEventListener('click', () => {
+            closeAllPopups();
+            profileOptionsPopup.style.display = 'block';
+        });
+
+        closeProfileOptions.addEventListener('click', () => {
+            profileOptionsPopup.style.display = 'none';
+        });
+
+        viewPhotoBtn.addEventListener('click', () => {
+            closeAllPopups();
+            photoViewPopup.style.display = 'block';
+        });
+
+        closePhotoView.addEventListener('click', () => {
+            photoViewPopup.style.display = 'none';
+        });
+
+        updatePhotoBtn.addEventListener('click', () => {
+            closeAllPopups();
+            updatePhotoPopup.style.display = 'block';
+        });
+
+        deleteAccountBtn.addEventListener('click', () => {
+            closeAllPopups();
+            deleteConfirmationPopup.style.display = 'block';
+        });
+
+        closeUpdatePhoto.addEventListener('click', () => {
+            updatePhotoPopup.style.display = 'none';
+        });
+
+        confirmDeleteBtn.addEventListener('click', () => {
+            deleteAccount();
+        });
+
+        cancelDeleteBtn.addEventListener('click', () => {
+            deleteConfirmationPopup.style.display = 'none';
+        });
+
+        updatePhoneBtn.addEventListener('click', () => {
+            closeAllPopups();
+            updatePhonePopup.style.display = 'block';
+        });
+
+        closePhonePopup.addEventListener('click', () => {
+            updatePhonePopup.style.display = 'none';
+        });
+
+        updatePasswordBtn.addEventListener('click', () => {
+            closeAllPopups();
+            updatePasswordPopup.style.display = 'block';
+        });
+
+        closePasswordPopup.addEventListener('click', () => {
+            updatePasswordPopup.style.display = 'none';
+        });
+        async function fetchUserDetails() {
+    const driverId = localStorage.getItem('driver_id'); // ✅ Fetch driver_id
+
+    if (!driverId) {
+        console.error("Error: driver_id not found in localStorage");
+        alert("User not logged in. Redirecting to login page.");
+        window.location.href = "index.html";
+        return;
+    }
+
+    console.log("Fetching user details for driver_id:", driverId); // ✅ Debugging
+
+    try {
+        const response = await fetch('dacc.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ fetchUserDetails: true, driver_id: driverId }) // ✅ Send driver_id instead of email
+        });
+
+        console.log("Response status:", response.status); // ✅ Debugging HTTP status
+
+        if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
+
+        const result = await response.json();
+        console.log("Server Response:", result); // ✅ Log full response
+
+        if (result.status === 'success') {
+            document.getElementById('profileImage').src = result.user.driver_photo;
+            document.getElementById('zoomedPhoto').src = result.user.driver_photo;
+            document.getElementById('phoneInput').value = result.user.phone;
+        } else {
+            alert(result.message);
+            window.location.href = "index.html";
+        }
+    } catch (error) {
+        console.error("Error fetching user details:", error);
+        alert("Failed to fetch user details.");
+    }
+}
+
+
+        // Function to update profile photo
+        async function updateProfilePhoto(file) {
+    const driverId = localStorage.getItem('driver_id'); // ✅ Get driver_id
+
+    if (!driverId) {
+        alert("User not logged in.");
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append('newPhoto', file);
+    formData.append('updatePhoto', true);
+    formData.append('driver_id', driverId); // ✅ Fix: Send driver_id
+
+    try {
+        const response = await fetch('dacc.php', {
+            method: 'POST',
+            body: formData,
+        });
+
+        const result = await response.json();
+        alert(result.message);
+        if (result.status === 'success') {
+            fetchUserDetails(); // Refresh profile photo
+        }
+    } catch (error) {
+        console.error("Error updating profile photo:", error);
+    }
+}
+
+
+        // Function to update phone number
+        async function updatePhoneNumber(newPhone) {
+            try {
+                const response = await fetch('dacc.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ phone: newPhone, updatePhone: true }),
+                });
+
+                const result = await response.json();
+                alert(result.message);
+                if (result.status === 'success') {
+                    fetchUserDetails(); // Refresh phone number
+                }
+            } catch (error) {
+                console.error("Error updating phone number:", error);
+            }
+        }
+
+        // Function to update password
+        async function updatePassword(currentPassword, newPassword, confirmPassword) {
+            try {
+                const response = await fetch('dacc.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ current_password: currentPassword, new_password: newPassword, confirm_password: confirmPassword, updatePassword: true }),
+                });
+
+                const result = await response.json();
+                alert(result.message);
+            } catch (error) {
+                console.error("Error updating password:", error);
+            }
+        }
+
+        // Function to delete account
+        async function deleteAccount() {
+    try {
+        const response = await fetch('dacc.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ deleteAccount: true }),
+        });
+
+        const result = await response.json();
+        alert(result.message);
+        if (result.status === 'success') {
+            localStorage.removeItem('driver_id'); // ✅ Fix: Remove correct key
+            window.location.href = "index.html"; // Redirect to login page
+        }
+    } catch (error) {
+        console.error("Error deleting account:", error);
+    }
+}
+
+        function togglePassword(inputId) {
+    const input = document.getElementById(inputId);
+    const icon = input.nextElementSibling;
+
+    if (input.type === 'password') {
+        input.type = 'text';
+        icon.classList.replace("fa-eye", "fa-eye-slash");
+    } else {
+        input.type = 'password';
+        icon.classList.replace("fa-eye-slash", "fa-eye");
+    }
+}
+
+
+        // Event listeners
+        document.getElementById('updatePhotoForm').addEventListener('submit', (e) => {
+    e.preventDefault(); // ✅ Stop page reload
+    const file = document.getElementById('newPhoto').files[0];
+    if (file) {
+        updateProfilePhoto(file);
+    } else {
+        alert("Please select a file.");
+    }
+});
+
+
+document.getElementById('updatePhoneForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const newPhone = document.getElementById('phoneInput').value;
+    if (newPhone) {
+        updatePhoneNumber(newPhone);
+    } else {
+        alert("Please enter a phone number.");
+    }
+});
+
+
+document.getElementById('updatePasswordForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const currentPassword = document.getElementById('currentPassword').value;
+    const newPassword = document.getElementById('newPassword').value;
+    const confirmPassword = document.getElementById('confirmPassword').value;
+    
+    if (currentPassword && newPassword && confirmPassword) {
+        updatePassword(currentPassword, newPassword, confirmPassword);
+    } else {
+        alert("Please fill all fields.");
+    }
+});
+
+
+        // Fetch user details on page load
+        window.onload = fetchUserDetails;
+    </script>
+</body>
+</html>

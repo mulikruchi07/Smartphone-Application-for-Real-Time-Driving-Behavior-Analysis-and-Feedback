@@ -7,6 +7,7 @@
     <title>Manage Cars</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <script src="theme.js" defer></script>
     <style>
         body {
             margin: 0;
@@ -26,7 +27,7 @@
             text-align: center;
             font-size: 26px;
             font-weight: bold;
-            margin: 20px 0 40px;
+            margin: 10px 0 0px;
             color: #ffffff;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
         }
@@ -161,13 +162,11 @@
             position: fixed;
             top: 20px;
             left: 20px;
-            background-color: #26374D;
             color: #F4F4F8;
             font-size: 18px;
             padding: 10px 15px;
             border-radius: 8px;
             text-decoration: none;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
         }
 
         .back-button i {
@@ -198,6 +197,194 @@
             box-sizing: border-box;
         }
 
+
+        .light-theme{
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background-color: #fff;
+            overflow-x: hidden;
+        }
+
+        .light-theme .container {
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .light-theme .title {
+            text-align: center;
+            font-size: 26px;
+            font-weight: bold;
+            margin: 20px 0 40px;
+            color: #2575fc;
+            text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.5);
+        }
+
+        .light-theme .car-box {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: #AECCE4;
+            color: #000;
+            border-radius: 12px;
+            padding: 16px;
+            margin: 20px 0;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease-in-out, background-color 0.3s ease;
+        }
+
+        .light-theme .car-details {
+            font-size: 15px;
+            line-height: 1.5;
+            flex-grow: 1;
+        }
+
+        .light-theme .car-photo {
+            width: 90px;
+            height: 60px;
+            border-radius: 10px;
+            object-fit: cover;
+            margin-left: 20px;
+        }
+
+        .light-theme .dropdown {
+            position: absolute;
+            top: 140%;
+            right: 20px;
+            display: none;
+            background-color: #9ab7cf;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            transform: translateY(-50%);
+            z-index: 1;
+        }
+
+        .light-theme .dropdown-content a {
+            color: black;
+            padding: 8px 12px;
+            text-decoration: none;
+            display: block;
+            border-radius: 8px;
+            transition: background-color 0.3s ease;
+        }
+
+        .light-theme .dropdown-content a:hover {
+            background-color: #93acc1;
+        }
+
+        .light-theme .car-box:hover .dropdown {
+            display: block;
+        }
+
+        .light-theme .add-car-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #81bde6;
+            color: #1E2A3A;
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .light-theme .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .light-theme .modal-content {
+            background-color: #AECCE4;
+            color: #000;
+            border-radius: 12px;
+            padding: 20px 30px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .light-theme .modal-content input,
+        .light-theme .modal-content button {
+            width: 100%;
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 8px;
+            border: none;
+            font-size: 14px;
+        }
+
+        .light-theme .modal-content input {
+            margin: 10px 0;
+            box-sizing: border-box;
+        }
+
+
+        .light-theme .cancel-btn {
+            background-color: #F05050;
+            color: white;
+            margin-top: 10px;
+        }
+
+        .light-theme .form-btns {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+        }
+
+        .light-theme .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            color: #000;
+            font-size: 18px;
+            padding: 10px 15px;
+            border-radius: 8px;
+            text-decoration: none;
+        }
+
+        .light-theme .back-button i {
+            margin-right: 8px;
+        }
+
+        .light-theme .modal.show {
+            display: flex;
+        }
+
+        .light-theme .input-block {
+            margin-bottom: 15px;
+        }
+
+        .light-theme .input-block label {
+            display: block;
+            margin-bottom: 5px;
+            color: #F4F4F8;
+            font-size: 14px;
+        }
+
+        .light-theme .input-block input {
+            width: 100%;
+            padding: 8px;
+            border-radius: 6px;
+            border: 1px solid #000;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+
         @media (max-width: 600px) {
             .car-box {
                 flex-direction: row;
@@ -220,6 +407,34 @@
             }
 
             .back-button {
+                font-size: 14px;
+                padding: 8px 12px;
+            }
+        }
+
+
+        @media (max-width: 600px) {
+            .light-theme .car-box {
+                flex-direction: row;
+                align-items: center;
+            }
+
+            .light-theme .car-photo {
+                width: 70px;
+                height: 45px;
+            }
+
+            .light-theme .car-details {
+                font-size: 13px;
+            }
+
+            .light-theme .add-car-btn {
+                width: 50px;
+                height: 50px;
+                font-size: 20px;
+            }
+
+            .light-theme .back-button {
                 font-size: 14px;
                 padding: 8px 12px;
             }

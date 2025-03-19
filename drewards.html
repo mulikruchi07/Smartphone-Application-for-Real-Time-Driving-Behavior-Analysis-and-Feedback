@@ -6,13 +6,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Rewards Wallet</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Roboto:wght@300;400;500&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <script src="theme.js" defer></script>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
             font-family: 'Poppins', sans-serif;
             margin: 0;
-            padding: 0;
+            padding-top: 40px;
             background-color: #1E2A3A;
             color: #e0e0e0;
             position: relative;
@@ -21,12 +31,27 @@
             border-radius: 20%;
         }
 
+        .title {
+            top: 0;
+            padding-top: 20px;
+            padding-left: 5px;
+            font-size: 26px;
+            font-weight: 600;
+            color: #d0a933;
+            background-color: #1E2A3A;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            margin-left: 10px;
+            position: fixed;
+            width: 100%;
+            z-index: 10;
+        }
 
         .header {
             text-align: center;
             padding: 30px;
             background-color: #1E2A3A;
-            border-bottom: 2px solid #444;
+            border-bottom: 1px solid #444;
         }
 
         .header h1 {
@@ -45,7 +70,7 @@
 
         .tabs {
             display: flex;
-            border-bottom: 2px solid #444;
+            border-bottom: 1px solid #444;
         }
 
         .tabs button {
@@ -73,10 +98,12 @@
         .content {
             padding: 25px;
             display: none;
+            padding-bottom: 55px;
         }
 
         .reward-item {
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: space-between;
             padding: 20px;
@@ -95,11 +122,13 @@
             width: 60px;
             height: 60px;
             border-radius: 50%;
-            margin-right: 20px;
+            margin-right: 0;
+            margin-bottom: 10px;
         }
 
         .reward-info {
             flex: 1;
+            margin-bottom: 10px;
         }
 
         .reward-title {
@@ -120,7 +149,8 @@
         }
 
         .redeem-button {
-            padding: 12px 20px;
+            width: 100%;
+            padding: 12px;
             background: #2575fc;
             color: #fff;
             border: none;
@@ -183,8 +213,8 @@
         }
 
         .reward-item .reward-image {
-            width: 80px;
-            height: 80px;
+            width: 60px;
+            height: 60px;
             border-radius: 15px;
             margin-right: 20px;
             object-fit: cover;
@@ -192,34 +222,259 @@
 
         /* Navigation Bar */
         .navbar {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
             display: flex;
             justify-content: space-around;
             align-items: center;
             padding: 15px 0;
-            position: fixed; 
-            bottom: 0;       
-            width: 100%;     
-            border-top: 1px solid #333;
-            background-color: #222; 
-            z-index: 1000;
+            background-color: #26374D;
+            box-shadow: 0px -2px 5px rgba(0, 0, 0, 0.3);
         }
 
         .nav-icon {
-            font-size: 28px;
-            color: #EDEDED;
+            font-size: 22px;
+            color: #F4F4F8;
             cursor: pointer;
             transition: color 0.3s ease-in-out;
         }
 
         .nav-icon:hover {
-            color: #00C1D4;
+            color: #d0a933;
         }
 
 
-        @media (max-width: 768px) {
+
+        .light-theme {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #fff;
+            color: #333;
+            position: relative;
+            height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .light-theme .container {
+            background: linear-gradient(135deg, #e0e7ff, #f0f4ff);
+            border-radius: 20px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .light-theme .title {
+            top: 0;
+            padding-top: 20px;
+            padding-left: 5px;
+            font-size: 26px;
+            font-weight: 600;
+            color: #2575fc;
+            background-color: #fff;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            margin-left: 10px;
+            position: fixed;
+            width: 100%;
+            z-index: 10;
+        }
+
+        .light-theme .header {
+            text-align: center;
+            padding: 30px;
+            background-color: white;
+            border-bottom: 2px solid #e6f0ff;
+        }
+
+        .light-theme .header h1 {
+            margin: 0;
+            font-size: 36px;
+            font-weight: 600;
+            color: #333;
+            animation: fadeIn 1.5s ease-out;
+        }
+
+        .light-theme .header p {
+            font-size: 20px;
+            color: #888;
+            margin-top: 10px;
+        }
+
+        .light-theme .tabs {
+            display: flex;
+            border-bottom: 2px solid #e6f0ff;
+        }
+
+        .light-theme .tabs button {
+            flex: 1;
+            padding: 20px;
+            border: none;
+            background: none;
+            font-size: 18px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+
+        .light-theme .tabs button:hover {
+            background: #f2f2f2;
+            transform: scale(1.05);
+        }
+
+        .light-theme .tabs button.active {
+            background: #6a11cb;
+            color: #fff;
+            font-weight: bold;
+        }
+
+        .light-theme  .content {
+            padding: 25px;
+            display: none;
+        }
+
+        .light-theme .reward-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease;
+        }
+
+        .light-theme .reward-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .light-theme .reward-item img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            margin-right: 20px;
+        }
+
+        .light-theme .reward-info {
+            flex: 1;
+        }
+
+        .light-theme .reward-title {
+            font-size: 20px;
+            margin: 0;
+            color: #333;
+        }
+
+        .light-theme .reward-desc {
+            font-size: 16px;
+            color: #888;
+        }
+
+        .light-theme .reward-points {
+            font-size: 18px;
+            color: #2575fc;
+            font-weight: bold;
+        }
+
+        .light-theme .redeem-button {
+            padding: 12px 20px;
+            background: #2575fc;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+
+        .light-theme .redeem-button:hover {
+            background: #6a11cb;
+            transform: scale(1.05);
+        }
+
+        /* Modal and Overlay Styles */
+        .light-theme #overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4);
+            z-index: 999;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .light-theme #message {
+            background: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            width: 400px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: relative;
+            animation: fadeInUp 0.5s ease-out;
+        }
+
+        .light-theme .congrats {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .light-theme .oops {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .light-theme .message-box img {
+            width: 50px;
+            height: 50px;
+            margin-bottom: 10px;
+        }
+
+        .light-theme .message-box p {
+            font-size: 18px;
+            margin: 0;
+        }
+
+        .light-theme  .reward-item .reward-image {
+            width: 80px;
+            height: 80px;
+            border-radius: 15px;
+            margin-right: 20px;
+            object-fit: cover;
+        }
+
+        .light-theme  .navbar {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 15px 0;
+            background-color: #AECCE4;
+            box-shadow: 0px -2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .light-theme .nav-icon {
+            font-size: 22px;
+            color: #000;
+            cursor: pointer;
+            transition: color 0.3s ease-in-out;
+        }
+
+        .light-theme .nav-icon:hover {
+            color: #AECCE4;
+        }
+
+
+        @media (max-width: 480px) {
 
             .header h1 {
-                font-size: 28px;
+                font-size: 20px;
             }
 
             .tabs button {
@@ -228,31 +483,42 @@
             }
 
             .reward-item {
-                flex-direction: column;
-                text-align: center;
+                flex-direction: row;
+                align-items: center;
+                text-align: left;
             }
 
             .reward-item img {
-                margin-bottom: 10px;
+                margin-right: 20px;
+                margin-bottom: 0;
             }
 
             .reward-info {
-                text-align: center;
+                flex: 1;
             }
 
             .redeem-button {
                 width: 100%;
-                padding: 14px;
+                margin-top: 10px;
+            }
+
+            .reward-item {
+                flex-wrap: wrap;
+                /* Wrap the redeem button below image and info */
+            }
+            
+            .reward-title {
+                font-size: 15px;
             }
 
             .nav-icon {
-            font-size: 24px;
-        }
+                font-size: 24px;
+            }
         }
 
         @media (max-width: 480px) {
             .header h1 {
-                font-size: 24px;
+                font-size: 20px;
             }
 
             .tabs button {
@@ -262,6 +528,10 @@
 
             .reward-item {
                 padding: 15px;
+            }
+
+            .reward-title {
+                font-size: 15px;
             }
 
             .redeem-button {
@@ -302,11 +572,81 @@
             }
         }
 
+
+        @media (max-width: 480px) {
+
+.light-theme .header h1 {
+    font-size: 20px;
+}
+
+.light-theme .tabs button {
+    font-size: 16px;
+    padding: 15px 0;
+}
+
+.light-theme .reward-item {
+    flex-direction: row;
+    align-items: center;
+    text-align: left;
+}
+
+.light-theme .reward-item img {
+    margin-right: 20px;
+    margin-bottom: 0;
+}
+
+.light-theme .reward-info {
+    flex: 1;
+}
+
+.light-theme .redeem-button {
+    width: 100%;
+    margin-top: 10px;
+}
+
+.light-theme .reward-item {
+    flex-wrap: wrap;
+    /* Wrap the redeem button below image and info */
+}
+
+.light-theme .reward-title {
+    font-size: 15px;
+}
+
+.light-theme .nav-icon {
+    font-size: 24px;
+}
+}
+
+@media (max-width: 480px) {
+    .light-theme .header h1 {
+    font-size: 20px;
+}
+
+.light-theme .tabs button {
+    font-size: 14px;
+    padding: 12px 0;
+}
+
+.light-theme .reward-item {
+    padding: 15px;
+}
+
+.light-theme .reward-title {
+    font-size: 15px;
+}
+
+.light-theme .redeem-button {
+    padding: 12px;
+}
+}
+
     </style>
 </head>
 
 <body>
     <div class="container">
+        <div class="title">| Rewards</div>
         <div class="header">
             <h1>Your Balance</h1>
             <p id="points">1260 points</p>
@@ -319,7 +659,6 @@
 
         <!-- Rewards History Tab -->
         <div id="wallet" class="content">
-            <h3>Rewards History</h3>
             <div id="history">
                 <p>No history available</p>
             </div>
@@ -328,63 +667,60 @@
         <!-- Redeem Tab -->
         <div id="redeem" class="content" style="display: none;">
             <div class="reward-item">
-                <img src="https://via.placeholder.com/80" class="reward-image" alt="5% off">
+                <img src="/images/c.jpg" class="reward-image" alt="5% off">
                 <div class="reward-info">
-                    <p class="reward-title">5% off entire order</p>
-                    <p class="reward-desc">Redeem for 200 points</p>
+                    <p class="reward-title">5% off on car insurance</p>
                     <p class="reward-points">Points: 200</p>
                 </div>
-                <button class="redeem-button" onclick="redeemReward(200, '5% off entire order')">Redeem</button>
+                <button class="redeem-button" onclick="redeemReward(200, '5% off on car insurance', '/images/c.jpg')">Redeem</button>
             </div>
 
             <div class="reward-item">
-                <img src="https://via.placeholder.com/80" class="reward-image" alt="10% off">
+                <img src="/images/a.jpg" class="reward-image" alt="10% off">
                 <div class="reward-info">
-                    <p class="reward-title">10% off entire order</p>
-                    <p class="reward-desc">Locked. Redeem this at 700 points</p>
+                    <p class="reward-title">Amazon gift car</p>
                     <p class="reward-points">Points: 700</p>
                 </div>
-                <button class="redeem-button" onclick="redeemReward(700, '10% off entire order')">Redeem</button>
+                <button class="redeem-button" onclick="redeemReward(700, 'Amazon gift card', '/images/a.jpg')">Redeem</button>
             </div>
 
             <div class="reward-item">
-                <img src="https://via.placeholder.com/80" class="reward-image" alt="15% off">
+                <img src="/images/f.png" class="reward-image" alt="15% off">
                 <div class="reward-info">
-                    <p class="reward-title">15% off entire order</p>
-                    <p class="reward-desc">Locked. Redeem this at 1000 points</p>
+                    <p class="reward-title">15% off on Family imsurance</p>
                     <p class="reward-points">Points: 1000</p>
                 </div>
-                <button class="redeem-button" onclick="redeemReward(1000, '15% off entire order')">Redeem</button>
+                <button class="redeem-button" onclick="redeemReward(1000, '15% off on Family insurance', '/images/f.png')">Redeem</button>
             </div>
 
             <div class="reward-item">
-                <img src="https://via.placeholder.com/80" class="reward-image" alt="25% off">
+                <img src="/images/t.jpg" class="reward-image" alt="25% off">
                 <div class="reward-info">
-                    <p class="reward-title">25% off entire order</p>
-                    <p class="reward-desc">Redeem for 1500 points</p>
+                    <p class="reward-title">25% off on next toll</p>
                     <p class="reward-points">Points: 1500</p>
                 </div>
-                <button class="redeem-button" onclick="redeemReward(1500, '25% off entire order')">Redeem</button>
+                <button class="redeem-button" onclick="redeemReward(1500, '25% off on next toll', '/images/t.jpg')">Redeem</button>
             </div>
 
             <div class="reward-item">
-                <img src="https://via.placeholder.com/80" class="reward-image" alt="Free Shipping">
+                <img src="/images/s.jpg" class="reward-image" alt="Free Shipping">
                 <div class="reward-info">
-                    <p class="reward-title">Free Shipping</p>
-                    <p class="reward-desc">Redeem for 500 points</p>
+                    <p class="reward-title">20% off on Car service</p>
                     <p class="reward-points">Points: 500</p>
                 </div>
-                <button class="redeem-button" onclick="redeemReward(500, 'Free Shipping')">Redeem</button>
+                <button class="redeem-button" onclick="redeemReward(500, '20% off on Car service', '/images/s.jpg')">Redeem</button>
             </div>
 
         </div>
-        </div>
+    </div>
 
-        <div class="navbar">
-            <a href="dashboard.html"><i class="fas fa-tachometer-alt nav-icon"></i></a>
-            <a href="drewards.html"><i class="fas fa-trophy nav-icon"></i></a>
-            <a href="owner_profile.php"><i class="fas fa-user nav-icon"></i></a>
-        </div>
+    <div class="navbar">
+        <a href="dashboard.html"><i class="fas fa-tachometer-alt nav-icon"></i></a>
+        <a href="drewards.html"><i class="fas fa-trophy nav-icon"></i></a>
+        <a href="#" id="profileLink" onmouseover="setProfileLink()">
+            <i class="fas fa-user nav-icon"></i>
+        </a>
+    </div>
 
     <!-- Overlay/Message Box -->
     <div id="overlay">
@@ -409,62 +745,62 @@
             event.currentTarget.classList.add('active');
         }
 
-        function redeemReward(cost, rewardTitle) {
-    const messageBox = document.getElementById('overlay');
-    const messageImage = document.getElementById('message-img');
-    const messageText = document.getElementById('message-text');
-    const pointsDisplay = document.getElementById('points'); // Ensure this targets the points display
+        function redeemReward(cost, rewardTitle, rewardImage) {
+            const messageBox = document.getElementById('overlay');
+            const messageImage = document.getElementById('message-img');
+            const messageText = document.getElementById('message-text');
+            const pointsDisplay = document.getElementById('points'); // Ensure this targets the points display
 
-    if (points >= cost) {
-        points -= cost;  // Deduct points
-        redeemedRewards.push({ title: rewardTitle, points: cost });  // Add redeemed reward to history
-        updateHistory();  // Update history section
-        updateBalance();  // Update the main balance display
+            if (points >= cost) {
+                points -= cost;  // Deduct points
+                redeemedRewards.push({ title: rewardTitle, points: cost, image: rewardImage});  // Add redeemed reward to history
+                updateHistory();  // Update history section
+                updateBalance();  // Update the main balance display
 
-        // Show success message
-        messageImage.src = 'https://via.placeholder.com/50/4CAF50/FFFFFF?text=👍';
-        messageText.innerText = `Congrats! ${rewardTitle} redeemed successfully.`;
-        messageBox.style.display = 'flex';
-    } else {
-        // Show failure message if not enough points
-        messageImage.src = 'https://via.placeholder.com/50/FF5733/FFFFFF?text=❌';
-        messageText.innerText = `Oops! Not enough points to redeem ${rewardTitle}.`;
-        messageBox.style.display = 'flex';
-    }
+                // Show success message
+                messageImage.src = 'https://cdn-icons-png.flaticon.com/512/845/845646.png';
+                messageText.innerText = `Congrats! ${rewardTitle} redeemed successfully.`;
+                messageBox.style.display = 'flex';
+            } else {
+                // Show failure message if not enough points
+                messageImage.src = 'https://cdn-icons-png.flaticon.com/512/1828/1828843.png';
+                messageText.innerText = `Oops! Not enough points to redeem ${rewardTitle}.`;
+                messageBox.style.display = 'flex';
+            }
 
-    // Hide message box after 5 seconds
-    setTimeout(() => {
-        messageBox.style.display = 'none';
-    }, 5000);
-}
+            // Hide message box after 5 seconds
+            setTimeout(() => {
+                messageBox.style.display = 'none';
+            }, 5000);
+        }
 
 
-function updateBalance() {
-    const pointsDisplay = document.getElementById('points');
-    pointsDisplay.innerText = `${points} points`; // Update the displayed balance
-}
+        function updateBalance() {
+            const pointsDisplay = document.getElementById('points');
+            pointsDisplay.innerText = `${points} points`; // Update the displayed balance
+        }
 
-function updateHistory() {
-    const historyContainer = document.getElementById('history');
-    historyContainer.innerHTML = '';  // Clear existing history
+        function updateHistory() {
+            const historyContainer = document.getElementById('history');
+            historyContainer.innerHTML = '';  // Clear existing history
 
-    if (redeemedRewards.length === 0) {
-        historyContainer.innerHTML = '<p>No history available</p>';
-    } else {
-        redeemedRewards.forEach(reward => {
-            const rewardElement = document.createElement('div');
-            rewardElement.classList.add('reward-item');
-            rewardElement.innerHTML = `
-                <img src="https://via.placeholder.com/50" alt="Reward">
+            if (redeemedRewards.length === 0) {
+                historyContainer.innerHTML = '<p>No history available</p>';
+            } else {
+                redeemedRewards.forEach(reward => {
+                    const rewardElement = document.createElement('div');
+                    rewardElement.classList.add('reward-item');
+                    rewardElement.innerHTML = `
+                <img src="${reward.image}" alt="${reward.title}" class="reward-image">
                 <div class="reward-info">
                     <p class="reward-title">${reward.title}</p>
                     <p class="reward-points">Points: ${reward.points}</p>
                 </div>
             `;
-            historyContainer.appendChild(rewardElement);
-        });
-    }
-}
+                    historyContainer.appendChild(rewardElement);
+                });
+            }
+        }
         // Function to close the modal when clicking anywhere outside
         window.onclick = function (event) {
             if (event.target === document.getElementById('overlay')) {
@@ -473,6 +809,31 @@ function updateHistory() {
         };
         // Initially update the rewards history
         updateHistory();
+        // Function to set the profile link on hover
+    function setProfileLink() {
+        const userType = localStorage.getItem('userType'); // Get user type from localStorage
+        const profileLink = document.getElementById('profileLink');
+
+        if (userType === 'owner') {
+            profileLink.href = "owner_profile.php";
+        } else if (userType === 'driver') {
+            profileLink.href = "driver_profile.php";
+        } else {
+            alert("User type not set. Redirecting to login page.");
+            profileLink.href = "index.html";
+        }
+
+        console.log(`User type: ${userType}, Profile link set to: ${profileLink.href}`);
+    }
+
+    // Optional: Set the link once the page loads
+    window.onload = function () {
+        setProfileLink();
+
+    // Set the default active tab to "Redeem"
+    showTab(event, 'redeem');
+    };
     </script>
 </body>
+
 </html>

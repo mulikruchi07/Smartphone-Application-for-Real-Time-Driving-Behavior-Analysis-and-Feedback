@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Weekly Report</title>
+    <title>Trip Driving Report</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -12,7 +12,7 @@
         body {
             font-family: 'Poppins', sans-serif;
             background-color: #1E2A3A;
-            color: #F4F4F8;
+            color: #ffffff;
             margin: 0;
             padding: 20px;
         }
@@ -25,10 +25,6 @@
             text-align: left;
         }
 
-        section {
-            margin-bottom: 20px;
-        }
-
         .charts {
             display: flex;
             flex-wrap: wrap;
@@ -38,7 +34,7 @@
 
         .chart-container {
             width: 300px;
-            height: 300px;
+            height: 150px;
             background-color: #293849;
             border-radius: 10px;
             padding: 10px;
@@ -63,32 +59,20 @@
             font-size: 16px;
             cursor: pointer;
         }
-
-        @media screen and (max-width: 600px) {
-            .charts {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .chart-container {
-                width: 100%;
-                max-width: 300px;
-            }
-        }
     </style>
 </head>
 
 <body>
-    <h1>Weekly Driving Report</h1>
+    <h1>Trip Driving Report</h1>
 
     <section id="executive-summary">
         <h2>Executive Summary</h2>
-        <p>This weekly report summarizes key metrics for driving behavior, including speed, cornering, and braking. The analysis highlights trends and provides actionable insights to improve driving safety and efficiency.</p>
+        <p id="executiveSummaryText"></p>
     </section>
 
     <section id="introduction">
         <h2>Introduction</h2>
-        <p>The purpose of this report is to monitor and evaluate driving behavior over the past week. Using advanced analytics, we aim to identify patterns in driving habits and areas for improvement.</p>
+        <p id="introductionText"></p>
     </section>
 
     <div class="charts">
@@ -105,108 +89,177 @@
 
     <section id="conclusion">
         <h2>Conclusion</h2>
-        <p>The report concludes that consistent monitoring and feedback can significantly enhance driving habits. The findings highlight the importance of maintaining optimal speed, smooth cornering, and controlled braking to ensure safety and efficiency.</p>
+        <p id="conclusionText"></p>
     </section>
 
     <div class="interaction">
         <button onclick="downloadPDF()">Download PDF</button>
     </div>
-    
+
     <script>
-        const createSpeedChart = () => {
+        let speedChart, corneringChart, brakeChart;
+
+        window.onload = () => {
+            updateTripData();
+            const speedData = getTripData('speedHistory');
+            const corneringData = getTripData('corneringHistory');
+            const brakeData = getTripData('brakingHistory');
+
+            updateReport(speedData, corneringData, brakeData);
+        };
+
+        function updateTripData() {
+            const latestSpeed = parseFloat(localStorage.getItem('speed')) || 0;
+            const latestCornering = parseFloat(localStorage.getItem('cornering')) || 0;
+            const latestBraking = parseFloat(localStorage.getItem('braking')) || 0;
+
+            updateHistory('speedHistory', latestSpeed);
+            updateHistory('corneringHistory', latestCornering);
+            updateHistory('brakingHistory', latestBraking);
+        }
+
+        function updateHistory(key, newValue) {
+            let history = JSON.parse(localStorage.getItem(key)) || [];
+            if (history.length >= 4) history.shift(); // Keep only last 4 values
+            history.push(newValue);
+            localStorage.setItem(key, JSON.stringify(history));
+        }
+
+        function getTripData(key) {
+            let data = JSON.parse(localStorage.getItem(key)) || [];
+            while (data.length < 4) data.unshift(0); // Fill with 0 if less than 4
+            return data.slice(-4); // Keep last 4 trips
+        }
+
+        function updateReport(speedData, corneringData, brakeData) {
+            if (speedChart) speedChart.destroy();
+            if (corneringChart) corneringChart.destroy();
+            if (brakeChart) brakeChart.destroy();
+
+            createSpeedChart(speedData);
+            createCorneringChart(corneringData);
+            createBrakeChart(brakeData);
+
+            const latestSpeed = speedData[speedData.length - 1];
+            const latestCornering = corneringData[corneringData.length - 1];
+            const latestBraking = brakeData[brakeData.length - 1];
+
+            let executiveSummary, introduction, conclusion;
+
+            // Executive Summary based on worst condition
+            if (latestSpeed > 100 || latestBraking > 80 || latestCornering > 2.5) {
+                executiveSummary = "Driving habits are unsafe, requiring serious improvement for better control and safety.";
+            } else if (latestSpeed > 80 || latestBraking > 60 || latestCornering > 2.0) {
+                executiveSummary = "Moderate driving risks detected, focus on smoother control and better road awareness.";
+            } else if (latestSpeed > 50 || latestBraking > 40 || latestCornering > 1.5) {
+                executiveSummary = "Good driving habits, but improvements in speed, braking, and cornering can be made.";
+            } else {
+                executiveSummary = "Excellent driving! Maintaining consistent speed and control ensures maximum safety on roads.";
+            }
+
+            // Introduction (Paragraph format)
+            introduction = `Your trip analysis indicates a speed of ${latestSpeed} km/h, a cornering G-force of ${latestCornering}, and a braking pressure of ${latestBraking} psi. These metrics highlight how efficiently and safely you are driving. Smooth speed control, stable cornering, and balanced braking contribute to an optimal driving experience. Below, you’ll find specific recommendations to enhance your driving further.`;
+
+            // Conclusion with solutions (Worst to Best)
+            conclusion = "";
+            if (latestSpeed > 100) {
+                conclusion += "Your speed is excessively high and dangerous. Reduce speed to improve safety. \n";
+                conclusion += "Follow speed limits and adjust based on road/weather conditions. \n";
+                conclusion += "Use cruise control on highways to maintain steady speeds.\n\n";
+            } else if (latestSpeed > 80) {
+                conclusion += "Your speed is slightly above safe limits. Slow down in congested areas. \n";
+                conclusion += "Avoid excessive acceleration and sudden speed changes. \n";
+                conclusion += "Monitor speed regularly to ensure safe driving habits.\n\n";
+            } else if (latestSpeed > 50) {
+                conclusion += "Your speed is well-balanced, but smoother acceleration can further improve control. \n";
+                conclusion += "Ensure gradual speed increase rather than sudden bursts. \n";
+                conclusion += "Maintain steady speeds in urban areas for better fuel efficiency.\n\n";
+            } else {
+                conclusion += "Great job maintaining a safe and stable speed throughout your trip! \n\n";
+            }
+
+            if (latestBraking > 80) {
+                conclusion += "Hard braking is frequent, increasing accident risk and wear on brakes. \n";
+                conclusion += "Anticipate traffic ahead to reduce emergency braking. \n";
+                conclusion += "Maintain a safe distance from vehicles in front.\n\n";
+            } else if (latestBraking > 60) {
+                conclusion += "Braking is slightly aggressive, increasing unnecessary stress on the vehicle. \n";
+                conclusion += "Apply brakes gradually instead of sudden stops. \n";
+                conclusion += "Consider using engine braking in steep areas.\n\n";
+            } else {
+                conclusion += "Smooth and controlled braking helps maintain vehicle stability. Keep it up! \n\n";
+            }
+
+            if (latestCornering > 2.5) {
+                conclusion += "Harsh cornering detected, increasing vehicle instability risk. \n";
+                conclusion += "Reduce speed before making turns and avoid sharp steering. \n";
+                conclusion += "Keep hands at 9 and 3 positions for better control.\n\n";
+            } else {
+                conclusion += "Your cornering is balanced and controlled. This enhances driving comfort and safety. \n\n";
+            }
+
+            document.getElementById('executiveSummaryText').innerText = executiveSummary;
+            document.getElementById('introductionText').innerText = introduction;
+            document.getElementById('conclusionText').innerText = conclusion;
+        }
+
+        function createSpeedChart(data) {
             const ctx = document.getElementById('speedChart').getContext('2d');
-            new Chart(ctx, {
+            speedChart = new Chart(ctx, {
                 type: 'line',
                 data: {
-                    labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+                    labels: ["Trip 1", "Trip 2", "Trip 3", "Trip 4"],
                     datasets: [{
                         label: 'Speed (km/h)',
-                        data: [60, 80, 70, 90],
+                        data: data,
                         borderColor: '#36A2EB',
                         fill: false,
                     }]
                 },
-                options: {
-                    responsive: true
-                }
+                options: { responsive: true }
             });
-        };
+        }
 
-        const createCorneringChart = () => {
+        function createCorneringChart(data) {
             const ctx = document.getElementById('corneringChart').getContext('2d');
-            new Chart(ctx, {
+            corneringChart = new Chart(ctx, {
                 type: 'bar',
                 data: {
-                    labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+                    labels: ["Trip 1", "Trip 2", "Trip 3", "Trip 4"],
                     datasets: [{
                         label: 'Cornering G-Force',
-                        data: [0.8, 1.2, 0.9, 1.1],
+                        data: data,
                         backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0'],
                     }]
                 },
-                options: {
-                    responsive: true
-                }
+                options: { responsive: true }
             });
-        };
+        }
 
-        const createBrakeChart = () => {
+        function createBrakeChart(data) {
             const ctx = document.getElementById('brakeChart').getContext('2d');
-            new Chart(ctx, {
+            brakeChart = new Chart(ctx, {
                 type: 'line',
                 data: {
-                    labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+                    labels: ["Trip 1", "Trip 2", "Trip 3", "Trip 4"],
                     datasets: [{
                         label: 'Brake Pressure (psi)',
-                        data: [30, 50, 45, 60],
+                        data: data,
                         borderColor: '#FF6384',
                         fill: false,
                     }]
                 },
-                options: {
-                    responsive: true
-                }
+                options: { responsive: true }
             });
-        };
-
-        const downloadPDF = () => {
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF('p', 'mm', 'a4');
-
-           
-            // Page 1: Executive Summary & Introduction
-            doc.setFontSize(18);
-            doc.text('Weekly Report', 20, 20);
-            doc.setFontSize(12);
-            doc.text('Executive Summary:', 20, 40);
-            doc.text('This weekly report summarizes key metrics for driving behavior, including speed, cornering, and braking.', 20, 50);
-            doc.text('Introduction:', 20, 70);
-            doc.text('The purpose of this report is to monitor and evaluate driving behavior over the past week.', 20, 80);
-
-            doc.addPage();
-
-            // Page 2: Speed and Cornering Charts
-            const speedChartCanvas = document.getElementById('speedChart');
-            const corneringChartCanvas = document.getElementById('corneringChart');
-            doc.addImage(speedChartCanvas, 'PNG', 20, 40, 160, 100);
-            doc.addImage(corneringChartCanvas, 'PNG', 20, 150, 160, 100);
-
-            doc.addPage();
-
-            // Page 3: Brake Chart & Conclusion
-            const brakeChartCanvas = document.getElementById('brakeChart');
-            doc.addImage(brakeChartCanvas, 'PNG', 20, 40, 160, 100);
-            doc.text('Conclusion:', 20, 160);
-            doc.text('Consistent monitoring and feedback enhance driving habits and safety.', 20, 170);
-
-            doc.save('weekly_report.pdf');
-        };
-
-        window.onload = () => {
-            createSpeedChart();
-            createCorneringChart();
-            createBrakeChart();
-        };
+        }
+        
+        function downloadPDF() {
+        if (window.ReactNativeWebView) {
+            window.ReactNativeWebView.postMessage("downloadPDF");
+        } else {
+            alert("This function only works in the mobile app.");
+        }
+    }
     </script>
 </body>
 

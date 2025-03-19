@@ -206,10 +206,10 @@
         <div class="content">
             <div class="logo">
                 <div class="logo1">
-                    <img src="tlogo.jpg" alt="logo1" id="logo-main">
+                    <img src="tlogo.png" alt="logo1" id="logo-main">
                 </div>
                 <div class="logo2">
-                    <img src="tlogo2.jpg" alt="logo2" id="logo-second">
+                    <img src="tlogo2.png" alt="logo2" id="logo-second">
                 </div>
                 <span class="trail"></span>
             </div>
@@ -219,6 +219,14 @@
     </div>
 
     <script>
+    const language = localStorage.getItem("lang") || "en"; // Default language
+        fetch("languages.json")
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("welcomeText").textContent = data[language].welcome;
+                document.getElementById("savioursText").textContent = data[language].saviours;
+            });
+
         // Redirect to another page after the animation ends
         setTimeout(() => {
             window.location.href = "index.html"; // Replace with your target page URL

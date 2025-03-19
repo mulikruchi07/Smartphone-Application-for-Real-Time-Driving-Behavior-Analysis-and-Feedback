@@ -74,6 +74,7 @@ $conn->close();
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <script src="theme.js" defer></script>
     <style>
         /* Global styling */
         body {
@@ -135,7 +136,7 @@ $conn->close();
 
         .car-details {
             margin-bottom: 10px;
-            font-size: 18px;
+            font-size: 14px;
             color: rgb(255, 255, 255);
         }
 
@@ -153,7 +154,7 @@ $conn->close();
             border-radius: 8px;
             box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
             color: #FFFFFF;
-            font-size: 16px;
+            font-size: 12px;
             position: relative;
             transition: transform 0.3s ease, background-color 0.3s ease;
         }
@@ -174,7 +175,7 @@ $conn->close();
 
         .actions {
             position: absolute;
-            right: 20px;
+            right: 8px;
             top: 50%;
             transform: translateY(-50%);
         }
@@ -197,6 +198,127 @@ $conn->close();
             color: #BBBBBB;
         }
 
+
+        .light-theme {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background-color: #fff;
+        }
+
+        /* Header styling */
+        .light-theme .header {
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            color: #2575fc;
+            padding: 15px 20px;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .light-theme .back-button {
+            color: #000;
+            font-size: 18px;
+            text-decoration: none;
+            padding: 8px 15px;
+            border-radius: 6px;
+            background-color: transparent;
+            transition: background 0.3s ease;
+        }
+
+        .light-theme .back-button:hover {
+            background-color: #3C4A5C;
+        }
+
+        .light-theme .title {
+            font-size: 26px;
+            font-weight: bold;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.5);
+            flex-grow: 1;
+        }
+
+        /* Main container styling */
+        .light-theme .container {
+            margin-top: 80px;
+            padding: 20px;
+        }
+
+        .light-theme .car-box {
+            background-color: #AECCE4;
+            padding: 15px;
+            border-radius: 12px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
+            margin-bottom: 20px;
+        }
+
+        .light-theme .car-details {
+            margin-bottom: 10px;
+            font-size: 18px;
+            color: rgb(4, 4, 4);
+        }
+
+        .light-theme .driver-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .light-theme .driver-item {
+            display: block;
+            padding: 12px;
+            margin-bottom: 10px;
+            background-color:rgb(83, 103, 132);
+            border-radius: 8px;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+            color: #fff;
+            font-size: 16px;
+            position: relative;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+
+        .light-theme .driver-item:hover {
+            background-color: #4B5C72;
+            transform: translateY(-5px);
+        }
+
+        .light-theme .driver-item span {
+            font-weight: 600;
+        }
+
+        .light-theme .driver-item .phone {
+            font-size: 14px;
+            color: rgb(13, 12, 12);
+        }
+
+        .light-theme .actions {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .light-theme .actions a {
+            text-decoration: none;
+            color:#FF7043;
+            margin: 0 10px;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        .light-theme .actions a:hover {
+            color: #FF7043;
+        }
+
+        .light-theme .empty-message {
+            text-align: center;
+            font-size: 18px;
+            color:rgb(255, 255, 255);
+        }
+
         @media (max-width: 768px) {
             .header {
                 flex-direction: column;
@@ -211,6 +333,24 @@ $conn->close();
             }
 
             .title {
+                font-size: 22px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .light-theme .header {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+
+            .light-theme .back-button {
+                position: absolute;
+                top: 15px;
+                left: 20px;
+            }
+
+            .light-theme .title {
                 font-size: 22px;
             }
         }

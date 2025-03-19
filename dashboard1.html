@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link async rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link async href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <script defer src="theme.js"></script>
+    <script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBqhLRLwEd7WneaBaq9mpddKR3j50j9LkM&libraries=places,marker&callback=initMap"
+        async defer></script>
+    <style>
+        body {
+            font-family: 'Poppins', Arial, sans-serif;
+            background-color: #1E2A3A;
+            color: #F4F4F8;
+            margin: 0;
+            padding: 0;
+        }
+
+        .title {
+            top: 0;
+            padding-top: 20px;
+            padding-left: 5px;
+            font-size: 26px;
+            font-weight: 600;
+            color: #d0a933;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            margin-left: 10px;
+            position: fixed;
+            background-color: #1E2A3A;
+            width: 100%;
+            padding-bottom: 10px;
+        }
+
+        .circle1 {
+            width: 180px;
+            height: 180px;
+            background-color: #26374D;
+            border-radius: 50%;
+            margin: 20px auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
+            margin-top: 80px;
+        }
+
+        .circle2 {
+            width: 120px;
+            height: 120px;
+            background-color: #1E2A3A;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .circle2 p {
+            font-size: 22px;
+            font-weight: bold;
+            color: #F4F4F8;
+        }
+
+        .stat {
+            display: flex;
+            justify-content: space-between;
+            margin: 20px 30px;
+            gap: 40px;
+        }
+
+        .stat div {
+            background-color: #26374D;
+            padding: 30px 10px;
+            border-radius: 12px;
+            text-align: center;
+            flex: 1;
+            color: #f9f9f9;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            font-size: 14px;
+            min-height: 270px;
+        }
+
+        .name {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 10px;
+        }
+
+        .name div {
+            text-align: center;
+            flex: 1;
+            margin: 0 5px;
+            color: #faf9f7;
+            font-size: 0.8rem;
+        }
+
+        .button-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin: 30px 20px;
+            padding-bottom: 70px;
+        }
+
+        .button {
+            padding: 10px;
+            background-color: #26374D;
+            color: #fff;
+            font-size: 14px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            text-align: center;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .button:hover {
+            background-color: #3c4a5c;
+        }
+
+        .navbar {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 15px 0;
+            background-color: #26374D;
+            box-shadow: 0px -2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-icon {
+            font-size: 22px;
+            color: #F4F4F8;
+            cursor: pointer;
+            transition: color 0.3s ease-in-out;
+        }
+
+        .nav-icon:hover {
+            color: #65addd;
+        }
+
+
+        .light-theme {
+            font-family: 'Poppins', Arial, sans-serif;
+            background-color: #fff;
+            margin: 0;
+            padding: 0;
+        }
+
+        .light-theme .title {
+            top: 0;
+            padding-top: 20px;
+            padding-left: 5px;
+            font-size: 26px;
+            font-weight: 600;
+            color: #2575fc;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            margin-left: 10px;
+            position: fixed;
+            background-color: #fff;
+            width: 100%;
+            padding-bottom: 10px;
+        }
+
+        .light-theme .circle1 {
+            width: 180px;
+            height: 180px;
+            background: #AECCE4;
+            border-radius: 50%;
+            margin: 20px auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
+            margin-top: 80px;
+        }
+
+        .light-theme .circle2 {
+            width: 120px;
+            height: 120px;
+            background-color: #fff;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .light-theme .circle2 p {
+            font-size: 22px;
+            font-weight: bold;
+            color: #000;
+        }
+
+        .light-theme .stat {
+            display: flex;
+            justify-content: space-between;
+            margin: 20px 30px;
+            gap: 40px;
+        }
+
+        .light-theme .stat div {
+            background-color: #AECCE4;
+            padding: 30px 10px;
+            border-radius: 12px;
+            text-align: center;
+            flex: 1;
+            color: #000;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            font-size: 14px;
+            min-height: 270px;
+        }
+
+        .light-theme .name {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 10px;
+        }
+
+        .light-theme .name div {
+            text-align: center;
+            flex: 1;
+            margin: 0 5px;
+            color: #000;
+            font-size: 0.8rem;
+        }
+
+        .light-theme .button-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin: 30px 20px;
+            padding-bottom: 70px;
+        }
+
+        .light-theme .button {
+            padding: 10px;
+            background-color: #AECCE4;
+            color: #000;
+            font-size: 14px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            text-align: center;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .light-theme .button:hover {
+            background-color: #3c4a5c;
+        }
+
+        .light-theme .button:active {
+            transform: scale(0.98);
+        }
+
+
+        .light-theme .navbar {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 15px 0;
+            background-color: #AECCE4;
+            box-shadow: 0px -2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .light-theme .nav-icon {
+            font-size: 22px;
+            color: #000;
+            cursor: pointer;
+            transition: color 0.3s ease-in-out;
+        }
+
+        .light-theme .nav-icon:hover {
+            color: #d0a933;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .circle1 {
+                width: 140px !important;
+                height: 140px !important;
+            }
+
+            .circle2 {
+                width: 80px;
+                height: 80px;
+            }
+
+            .stat {
+                flex-direction: row;
+                justify-content: space-between;
+                gap: 20px;
+            }
+
+            .stat div {
+                font-size: 12px;
+                padding: 20px 10px;
+                min-height: 200px;
+            }
+
+            .name div {
+                font-size: 0.8rem;
+            }
+
+            .button-container {
+                width: 90%;
+                margin: 15px auto;
+            }
+        }
+
+
+        @media (max-width: 768px) {
+            .light-theme .circle1 {
+                width: 140px !important;
+                height: 140px !important;
+            }
+
+            .light-theme .circle2 {
+                width: 80px;
+                height: 80px;
+            }
+
+            .light-theme .stat {
+                flex-direction: row;
+                justify-content: space-between;
+                gap: 20px;
+            }
+
+            .light-theme .stat div {
+                font-size: 12px;
+                padding: 20px 10px;
+                min-height: 200px;
+            }
+
+            .light-theme .name div {
+                font-size: 0.8rem;
+            }
+
+            .light-theme .button-container {
+                width: 90%;
+                margin: 15px auto;
+            }
+        }
+
+        .search-container {
+            position: relative;
+            top: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 85%;
+            z-index: 100;
+        }
+
+        #searchBox {
+            position: absolute;
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 15px;
+            border: none;
+            outline: none;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        #map {
+            height: 400px;
+            width: 96%;
+            margin: 5% 2%;
+            border-radius: 14px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        .light-theme .search-container {
+            position: relative;
+            top: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 85%;
+            z-index: 100;
+        }
+
+        .light-theme #searchBox {
+            position: absolute;
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 15px;
+            border: none;
+            outline: none;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .light-theme #map {
+            height: 400px;
+            width: 96%;
+            margin: 5% 2%;
+            border-radius: 14px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="title">| Dashboard</div>
+
+    <div class="circle1">
+        <div class="circle2">
+            <p id="speedText">Score</p>
+        </div>
+    </div>
+
+    <div class="stat">
+        <div id="speedBox">Speed: 0%</div>
+        <div id="corneringBox">Cornering: 0%</div>
+        <div id="brakingBox">Braking: 0%</div>
+    </div>
+
+    <div class="name">
+        <div>
+            <p>SPEED</p>
+        </div>
+        <div>
+            <p>CORNERING</p>
+        </div>
+        <div>
+            <p>BRAKING</p>
+        </div>
+    </div>
+    <div class="search-container">
+        <input id="searchBox" type="text" placeholder="Search location...">
+    </div>
+    <div id="map"></div>
+    <div class="button-container">
+        <button onclick="leaderboardPage()" class="button">Leaderboard</button>
+        <button onclick="reportPage()" class="button">Reports</button>
+    </div>
+
+    <div class="navbar">
+        <a href="dashboard.html"><i class="fas fa-tachometer-alt nav-icon"></i></a>
+        <a href="drewards.html"><i class="fas fa-trophy nav-icon"></i></a>
+        <a href="#" id="profileLink" onmouseover="setProfileLink()">
+            <i class="fas fa-user nav-icon"></i>
+        </a>
+    </div>
+
+    <script>
+        function leaderboardPage() {
+            window.location.href = "leaderboard.html";
+        }
+        function reportPage() {
+            window.location.href = "report.html";
+        }
+    </script>
+
+    <script>
+        let map, searchBox, userMarker, searchMarker, directionsService, directionsRenderer;
+
+        function initMap() {
+            map = new google.maps.Map(document.getElementById("map"), {
+                zoom: 15,
+                disableDefaultUI: true
+            });
+
+            directionsService = new google.maps.DirectionsService();
+            directionsRenderer = new google.maps.DirectionsRenderer({ map: map });
+
+            if (navigator.geolocation) {
+                navigator.geolocation.watchPosition(
+                    (position) => {
+                        const userLocation = {
+                            lat: position.coords.latitude,
+                            lng: position.coords.longitude
+                        };
+
+                        if (!userMarker) {
+                            userMarker = new google.maps.Marker({
+                                position: userLocation,
+                                map: map,
+                                title: "Your Location",
+                                icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
+                            });
+                        } else {
+                            userMarker.setPosition(userLocation);
+                        }
+
+                        map.setCenter(userLocation);
+                        updateBackend(userLocation.lat, userLocation.lng, "owner");
+                    },
+                    () => {
+                        alert("Geolocation service failed. Using default location.");
+                        handleLocationError();
+                    },
+                    { enableHighAccuracy: true }
+                );
+            } else {
+                alert("Your browser doesn't support geolocation. Using default location.");
+                handleLocationError();
+            }
+
+            searchBox = new google.maps.places.SearchBox(document.getElementById("searchBox"));
+            searchBox.addListener("places_changed", handleSearch);
+        }
+
+        function handleLocationError() {
+            const defaultLocation = { lat: 28.6139, lng: 77.2090 };
+            map.setCenter(defaultLocation);
+            userMarker = new google.maps.Marker({
+                position: defaultLocation,
+                map: map,
+                title: "Default Location",
+                icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
+            });
+        }
+
+        function handleSearch() {
+            const places = searchBox.getPlaces();
+            if (!places.length) return;
+
+            const place = places[0];
+            if (!place.geometry) return;
+
+            if (searchMarker) searchMarker.setMap(null);
+            searchMarker = new google.maps.Marker({
+                position: place.geometry.location,
+                map: map,
+                title: "Destination",
+                icon: "http://maps.google.com/mapfiles/ms/icons/red-dot.png"
+            });
+
+            map.setCenter(place.geometry.location);
+            drawRoute(place.geometry.location);
+
+            updateBackend(place.geometry.location.lat(), place.geometry.location.lng(), "driver");
+        }
+
+        function drawRoute(destination) {
+            if (!userMarker) return;
+
+            const request = {
+                origin: userMarker.getPosition(),
+                destination: destination,
+                travelMode: google.maps.TravelMode.DRIVING
+            };
+
+            directionsService.route(request, (result, status) => {
+                if (status === google.maps.DirectionsStatus.OK) {
+                    directionsRenderer.setDirections(result);
+                }
+            });
+        }
+
+        function updateBackend(lat, lng) {
+            fetch("update_location.php", {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: `lat=${lat}&lng=${lng}`
+            }).then(response => response.text()).then(data => console.log("Backend Response:", data));
+        }
+        // Function to set the profile link on hover
+        function setProfileLink() {
+            const userType = localStorage.getItem('userType'); // Get user type from localStorage
+            const profileLink = document.getElementById('profileLink');
+
+            if (userType === 'owner') {
+                profileLink.href = "owner_profile.php";
+            } else if (userType === 'driver') {
+                profileLink.href = "driver_profile.php";
+            } else {
+                alert("User type not set. Redirecting to login page.");
+                profileLink.href = "index.html";
+            }
+
+            console.log(`User type: ${userType}, Profile link set to: ${profileLink.href}`);
+        }
+
+        // Optional: Set the link once the page loads
+        window.onload = function () {
+            setProfileLink();
+        }
+
+    </script>
+</body>
+</html>

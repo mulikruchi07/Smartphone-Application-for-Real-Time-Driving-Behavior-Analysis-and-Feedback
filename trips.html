@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trips</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            background-color: #1e293b;
+            color: white;
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        .header {
+            font-size: 20px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .trip-container {
+            max-width: 90%;
+            margin: auto;
+            background: #2a3b4d;
+            border-radius: 15px;
+            padding: 10px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .trip-card {
+            background: #445d78;
+            padding: 0px 5px 0px 15px;
+            margin: 6px 0;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.3s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            font-size: 13px;
+        }
+        .trip-card:hover {
+            background: #60a5fa;
+        }
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #33475b;
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+            width: 90%;
+            text-align: left;
+            color: white;
+        }
+        .popup button {
+            background: #ff3b30;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+            margin-top: 20px;
+            width: 100%;
+        }
+        .back-button {
+            font-size: 24px;
+            color: #F4F4F8;
+            text-decoration: none;
+            position: absolute;
+            left: 15px;
+            transition: transform 0.2s;
+        }
+        .back-button:hover {
+            transform: scale(1.1);
+        }
+        .trip-details {
+            margin-top: 20px;
+        }
+        .trip-details p {
+            margin: 10px 0;
+            display: flex;
+            align-items: center;
+        }
+        .trip-details i {
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <a href="owner_profile.html" class="back-button"><i class="fas fa-arrow-left"></i></a>
+    <div class="header">Trip History</div>
+    <div class="trip-container">
+        <div class="trip-card" onclick="showTripDetails('26-Feb-2025', '10:30 AM', '11:15 AM', 'Maharana Pratap Chowk', 'Reay Road Railway Station', 'MH12AB1234', 85)">
+            <div>
+                <h3>Reay Road Railway Station</h3>
+                <p>26-Feb-2025 | 10:30 AM</p>
+            </div>
+            <span style="color:#00ff00; font-weight: bold; margin-right: 10px;">85%</span>
+        </div>
+    </div>
+    
+    <div class="popup" id="tripPopup">
+        <h3>Trip Details</h3>
+        <div class="trip-details" id="tripDetails"></div>
+        <button onclick="closePopup()">Close</button>
+    </div>
+    
+    <script>
+        function showTripDetails(date, startTime, endTime, from, to, carNumber, score) {
+            let details = `
+                <p><i class="fas fa-calendar-alt"></i> ${date}</p>
+                <p><i class="fas fa-clock"></i> ${startTime} - ${endTime}</p>
+                <p><i class="fas fa-map-marker-alt"></i> ${from}</p>
+                <p><i class="fas fa-map-marker-alt"></i> ${to}</p>
+                <p><i class="fas fa-car"></i> ${carNumber}</p>
+            `;
+            document.getElementById("tripDetails").innerHTML = details;
+            document.getElementById("tripPopup").style.display = "block";
+        }
+        
+        function closePopup() {
+            document.getElementById("tripPopup").style.display = "none";
+        }
+    </script>
+</body>
+</html>

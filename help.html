@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Help Center</title>
+    
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        html, body {
+        width: 100%;
+        overflow-x: hidden;
+        margin: 0;
+        padding: 10px;
+    }
+
+
+        * {
+            max-width: 100%;
+            box-sizing: border-box;
+        }
+
+        .full-width {
+            width: 100%;
+        }
+        body {
+            background-color: #1E2A3A;
+            color: #EDEDED;
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        /* .container {
+            max-width: 400px;
+            margin: auto;
+            background: #1E2A3A;
+            border-radius: 10px;
+            padding: 20px;
+            color: #333;
+        } */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px;
+            color:#d0a933;
+        }
+        .search-container {
+            display: flex;
+            align-items: center;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 5px;
+            margin-top: 10px;
+            background: #1E2A3A;
+            /* color:white; */
+            margin:10px 0 0;
+            box-shadow:  0 0 0  10px  #1E2A3A;
+        }
+        .search {
+            width: 100%;
+            border: none;
+            outline: none;
+            padding: 5px;
+        }
+        .search-icon {
+            margin-right: 5px;
+            color: #999;
+        }
+        .tabs {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            border-bottom: 2px solid #d0a933;
+        }
+        .tab {
+            padding: 10px;
+            cursor: pointer;
+            color: #d0a933;
+        }
+        .tab.active {
+            border-bottom: 2px solid #d0a933;
+        }
+        .faq-container {
+            max-height: 500px;
+            overflow-y: auto;
+            margin-top: 10px;
+            display: none;
+        }
+        .faq.active .faq-container {
+            display: block;
+        }
+        .question {
+        padding:  12px 15px;
+        border-radius: 8px; /* Rounded edges */
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: white;
+        background: #263A4D; /* Slightly different background */
+        width: 95vw; /* Use viewport width for better responsiveness */
+        max-width: 95%; /* Expand closer to screen edges */
+        margin: 10px auto; /* Center the box */
+        word-wrap: break-word; 
+        min-height: 100vh; /* Full height of the screen */
+    display: flex;
+    align-items: center; /* Center text vertically */
+    text-align: left;
+    min-height: 60px;  /* Prevents excessive height */
+
+    }
+
+
+        .answer {
+            display: none;
+            padding: 5px 10px;
+            background: #1E2A3A;
+            border-radius: 5px;
+            color:white;
+        }
+        .contact {
+            display: none;
+            margin-top: 10px;
+        }
+        .contact.active {
+            display: block;
+        }
+        .category {
+    padding: 5px 10px;
+    border-radius: 15px;
+    background: #d0a933;
+    color: white;
+    cursor: pointer;
+    text-align: center;
+    min-width: 80px; /* Ensures small buttons don't shrink too much */
+    max-width: 100px; /* Prevents buttons from becoming too large */
+}
+
+        .categories {
+    display: flex;
+    flex-wrap: wrap;  /* Ensures buttons stay inside */
+    justify-content: center; /* Centers buttons */
+    gap: 10px;
+    margin-top: 10px;
+}
+
+        .faq.active .faq-container {
+            display: block;
+        }
+       .search{
+        background: #1E2A3A;
+        color:white;
+       }
+
+       .contact.active{
+        color:white;
+       }
+       .header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    position: relative;
+    margin-bottom: 15px;
+    background-color: #1E2A3A; /* Example background color */
+    padding: 8px 16px; /* Adjusted padding */
+}
+
+.title {
+    font-size: 20px;
+    font-weight: 500; /* Slightly less bold */
+    color: #d0a933;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+    margin: 0;
+    flex-grow: 1; 
+    text-align: center;
+}
+
+.back-arrow {
+    position: absolute;
+    left: 15px; /* Adjusted spacing */
+    text-decoration: none;
+    
+    font-size: 20px; /* Reduced size */
+    transition: transform 0.2s;
+}
+@media (max-width: 600px) {
+    .question {
+        max-width: 98%; /* Take almost full width on small screens */
+    }
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <i class="fas fa-arrow-left back-arrow"></i>
+            <h2>Help Center</h2>
+        </div>
+        
+        
+        <div class="search-container">
+            <span class="search-icon">🔍</span>
+            <input type="text" class="search" placeholder="Search" onkeyup="searchFAQ()">
+        </div>
+        
+        <div class="tabs">
+            <div class="tab active" onclick="showTab('faq')">FAQ</div>
+            <div class="tab" onclick="showTab('contact')">Contact Us</div>
+        </div>
+        
+       
+        <div class="categories">
+            <div class="category" onclick="filterFAQs('All')">All</div>
+            <div class="category" onclick="filterFAQs('Services')">Services</div>
+            <div class="category" onclick="filterFAQs('General')">General</div>
+            <div class="category" onclick="filterFAQs('Account')">Account</div>
+        </div>
+        
+
+        <div class="faq active" id="faq">
+            <div class="faq-container" id="faq-container"></div>
+        </div>
+        
+        <div class="contact" id="contact">
+            <h3>Contact Us</h3>
+            <p><strong>Email:</strong> support@driveguard.com</p>
+            <p><strong>Phone:</strong> +91 98765 43210</p>
+            
+        </div>
+    </div>
+    
+    <script>
+        let faqs = [
+    {q: "How does DriveGuard detect rash driving?", a: "DriveGuard uses smartphone sensors to monitor sudden acceleration, harsh braking, and sharp turns.", category: "Services"},
+    {q: "Does DriveGuard provide real-time feedback?", a: "Yes, the app gives real-time alerts for overspeeding, abrupt braking, and other unsafe behaviors.", category: "Services"},
+    {q: "Can DriveGuard be used on any smartphone?", a: "DriveGuard is compatible with most Android and iOS smartphones with necessary sensors.", category: "General"},
+    {q: "Do I need an account to use DriveGuard?", a: "Yes, an account is required to track and analyze driving patterns.", category: "Account"},
+    {q: "How accurate is the data collected by DriveGuard?", a: "DriveGuard ensures high accuracy by using advanced AI and GPS calibration.", category: "General"},
+    {q: "Can DriveGuard work without an internet connection?", a: "Yes, it can log driving data offline and sync when online.", category: "General"},
+    {q: "Is my data secure with DriveGuard?", a: "Yes, DriveGuard follows strict data security protocols and encryption methods.", category: "Account"},
+    {q: "Can I disable certain alerts in DriveGuard?", a: "Yes, you can customize alerts from the settings menu.", category: "General"},
+    {q: "How does DriveGuard measure overspeeding?", a: "DriveGuard uses GPS and speed limit databases to detect overspeeding.", category: "Services"},
+    {q: "Does DriveGuard support multiple vehicles?", a: "Yes, you can register multiple vehicles in one account.", category: "Account"}
+];
+
+        
+function loadFAQs(category = "All") {
+    let container = document.getElementById("faq-container");
+    let filteredFAQs = category === "All" ? faqs : faqs.filter(faq => faq.category === category);
+    
+    container.innerHTML = filteredFAQs.map(faq => `
+       <div class='question' onclick='toggleAnswer(this)'>
+        <span>${faq.q}</span>
+        <span><i class="fa-solid fa-chevron-down"></i></span>
+    </div>
+
+        <div class='answer'>${faq.a}</div>
+    `).join('');
+}
+
+function filterFAQs(category) {
+    loadFAQs(category);
+}
+
+        
+function toggleAnswer(element) {
+    let answer = element.nextElementSibling;
+    answer.style.display = answer.style.display === 'block' ? 'none' : 'block';
+
+    // Get the icon element
+    let icon = element.querySelector('i');
+
+    // Toggle classes for Font Awesome icons
+    if (answer.style.display === 'block') {
+        icon.classList.remove('fa-chevron-down');
+        icon.classList.add('fa-chevron-up');
+    } else {
+        icon.classList.remove('fa-chevron-up');
+        icon.classList.add('fa-chevron-down');
+    }
+}
+
+        
+        function searchFAQ() {
+    let input = document.querySelector('.search').value.toLowerCase();
+    let questions = document.querySelectorAll('.faq .question');
+    let faqContainer = document.getElementById("faq-container");
+    let categories = document.querySelector(".categories"); // Select category buttons
+    let found = false;
+
+    if (input.trim() === "") {
+        // If search is cleared, reload FAQs, show categories, and hide contact
+        loadFAQs();
+        categories.style.display = "flex"; // Show categories
+        document.getElementById('faq').classList.add('active');
+        document.getElementById('contact').classList.remove('active');
+        return;
+    }
+
+    // Hide category buttons when searching
+    categories.style.display = "none"; 
+
+    questions.forEach(q => {
+        if (q.textContent.toLowerCase().includes(input)) {
+            q.style.display = 'flex';
+            q.nextElementSibling.style.display = 'none';
+            found = true;
+        } else {
+            q.style.display = 'none';
+        }
+    });
+
+    if (!found) {
+        faqContainer.innerHTML = `<p style="color: red; text-align: center;">Your search did not match any FAQs. Please contact us for more help.</p>`;
+        document.getElementById('faq').classList.add('active');
+        document.getElementById('contact').classList.add('active'); // Show Contact Us if no match
+    } else {
+        document.getElementById('faq').classList.add('active');
+        document.getElementById('contact').classList.remove('active');
+    }
+}
+
+
+
+
+function showTab(tab) {
+    document.getElementById('faq').classList.remove('active');
+    document.getElementById('contact').classList.remove('active');
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelector(`.tab[onclick="showTab('${tab}')"]`).classList.add('active');
+    document.getElementById(tab).classList.add('active');
+
+    // Hide categories when "Contact Us" is active, show when "FAQ" is active
+    document.querySelector(".categories").style.display = (tab === 'contact') ? "none" : "flex";
+}
+        
+        document.addEventListener("DOMContentLoaded", () => loadFAQs());
+
+    </script>
+</body>
+</html>
